@@ -1,27 +1,11 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue Sample</title>
-</head>
-<body>
-    <div id="test">
-        <a>{{ cnt }}</a>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        new Vue({
-            el: '#test',
-            data: {
-                any : `아무노래나 일단 틀어`,
-            },
-            computed: {
-                cnt : function() {
-                    return this.any.length;
-                }
-            }
-        });
-    </script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>template</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="/dist/build.js"></script>
+  </body>
 </html>
