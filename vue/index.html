@@ -5,38 +5,21 @@
     <title>Vue Sample</title>
 </head>
 <body>
-    <div id="app">
-        <my-component1></my-component1>
-        <my-component2></my-component2>
-    </div>
-    <div>
-        <my-component></my-component>
-
+    <div id="test">
+        <a>{{ cnt }}</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        const cmp1 = {
-            template: '<div>첫 번째 지역 컴포넌트 : {{ cmp1Data }}</div>',
-            data : function() {
-                return {
-                    cmp1Data : 100
-                }
-            }
-        };
-
-        const cpm2 = {
-            template: '<div>두 번째 지역 컴포넌트 : {{ cpm2Data }}</div>',
-            data : function() {
-                return {
-                    cpm2Data : cmp1.data.cmp1Data
-                }
-            }
-        };
         new Vue({
-            el: '#app',
-            components: {
-                'my-component1': cmp1,
-                'my-component2': cmp2
+            el: '#test',
+            data: {
+                any : `아무노래나 일단 틀어`,
+            },
+            computed: {
+                cnt : function() {
+                    return this.any.length;
+                }
             }
         });
     </script>
