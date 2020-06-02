@@ -3,11 +3,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cor = require('cors');
+const dotenv = require('dotenv');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const indexRouter = require('./controller/index');
+const userRouter = require('./controller/user');
 
 const app = express();
+
+require('dotenv').config();
 
 app.use(cor());
 
@@ -15,9 +18,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
 
 module.exports = app;
