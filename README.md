@@ -23,6 +23,14 @@
 
     # FOR LOL API
     LOL_KEY=자신의 롤 개발 API
+
+    # MONGO
+    ID = 몽고DB계정ID
+    PASSWORD = 몽고DB계정PW
+    DBPORT = 몽고DBPORT # default PORT is 27017
+    DB = 몽고DB주소 # default db is localhost
+    DBNAME = 몽고DB이름
+
     ```
 
 - **API**

@@ -14,12 +14,16 @@
 그 다음 accountid값으로 최근 매치를 가져와 데이터 짜름
 
 {
-name
-rank tier
-rank score
-win
-lose
-etc
-recentMatch
-recentChampion
-recentWinLose
+    name
+    encryptedId
+    encryptedAccountId
+    level
+    rank tier
+    rank score
+    win
+    lose
+    etc
+    recentMatch
+    recentChampion
+    recentWinLose
+}

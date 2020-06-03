@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cor = require('cors');
 const dotenv = require('dotenv');
+const mongo = require('./bin/mongoose');
 
 const indexRouter = require('./controller/index');
 const userRouter = require('./controller/user');
@@ -13,6 +14,7 @@ const app = express();
 require('dotenv').config();
 
 app.use(cor());
+mongo();
 
 app.use(logger('dev'));
 app.use(express.json());
