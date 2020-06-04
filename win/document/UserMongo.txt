@@ -14,16 +14,20 @@
 그 다음 accountid값으로 최근 매치를 가져와 데이터 짜름
 
 {
+    아래는 처음에 가져옴
     name
     encryptedId
     encryptedAccountId
     level
+    // 리그에 있음
     rank tier
     rank score
     win
     lose
     etc
+    // 매치내용
     recentMatch
     recentChampion
+    recentLane
     recentWinLose
 }

@@ -31,25 +31,57 @@ const getUserId = async (name) => {
   return result;
 };
 
-const checkId = async (accountId) => {
-  await userSchema.countDocuments({ encryptedAccountId: accountId }, function (
-    err,
-    count
-  ) {
-    console.log(`We go hi : ${count}`);
-  });
+// check user's modifiedDate over 3 minutes
+const checkModifiedDate = async (modifiedDate) => {
+  const elapsed = (Date.now() - modifiedDate.getTime()) / 1000;
+  return elapsed > 300;
 };
 
+// get user's data in MongoDB
+const getUserDB = async (accountId) => {
+  try {
+    const user = await userSchema.findOne({ encryptedAccountId: accountId });
+    return user;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+// count user's Data in MongoDB for getUserDB
+const cntIdByAccountId = async (accountId) => {
+  try {
+    const cnt = await userSchema
+      .countDocuments({ encryptedAccountId: accountId })
+      .catch((e) => console.error(e));
+    return cnt > 0;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const saveUserDB = async (info) => {
+  const 
+};
+
+// export function
 module.exports.getUser = async (name) => {
   const validName = name.replace(/(\s*)/g, '').toLowerCase();
   const userIdInfo = await getUserId(validName);
-  // if (await checkId(userIdInfo.encryptedAccountId)) {
-  //   console.log('data is good');
-  // } else {
-  //   console.log('data is null');
-  // }
-  // data에 3분 이내에 갱신되거나 생성된 user데이터가 있는가?
-  // 있다면 해당 데이터를 return 없을 경우 갱신 또는 생성 단계
+  const accountId = userIdInfo.encryptedAccountId;
+
+  if (await cntIdByAccountId(accountId)) {
+    const user = await getUserDB(accountId);
+    if (await checkModifiedDate(user.modifiedDate)) {
+    } else {
+      return { err: 'NOTOVER3MINUTES' };
+    }
+  } else {
+    try {
+      await saveUserDB(userIdInfo);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
   // name, encryptedId, encryptedAccountId, level in userIdInfo
   return userIdInfo;
