@@ -4,12 +4,13 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
     ogName: String,
-    name: String,
+    name: { type: String, index : true, unique: true },
     encryptedId: String,
-    encryptedAccountId: String,
+    encryptedAccountId: { type: String, index : true, unique: true },
     level: Number,
     rankTier: String,
     rankScore: Number,
+    battleScore: Number,
     win: Number,
     lose: Number,
     etc: [String],
@@ -24,7 +25,5 @@ const userSchema = new Schema(
     versionKey: '_somethingElse',
   }
 );
-
-userSchema.index({ name: 1, encryptedId: 1 });
 
 module.exports = mongoose.model('user', userSchema);

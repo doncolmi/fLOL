@@ -70,15 +70,6 @@ const getUserDB = async (accountId) => {
   }
 };
 
-const getUserDbByName = async (name) => {
-  try {
-    const user = await userSchema.findOne({ name: name });
-    return user;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
 // count user's Data in MongoDB for getUserDB
 const cntIdByAccountId = async (accountId) => {
   try {
@@ -96,6 +87,9 @@ const getUserLeagueInfo = async (encryptedId) => {
   const getUserLeagueAPI = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedId}`;
   const league = await axios.get(getUserLeagueAPI, Config());
   const data = league.data[0];
+  // 만약 언랭일때는 데이터가 []로 들어오는데
+  // []일때는 언랭이므로 따로 처리해줘야함
+  // 이거 말고도 전적이 10회 아래면 오류 뜨는거 처리해줘야 할듯;
 
   // make ETC info
   const etc = [];
@@ -108,6 +102,7 @@ const getUserLeagueInfo = async (encryptedId) => {
   return {
     rankTier: `${data.tier} ${data.rank}`,
     rankScore: `${data.leaguePoints}`,
+    battleScore: lolData.getBattleScore(`${data.tier} ${data.rank}`, data.leaguePoints),
     win: data.wins,
     lose: data.losses,
     etc: etc,
@@ -201,31 +196,59 @@ module.exports.getUser = async (name) => {
   if (await cntIdByAccountId(accountId)) {
     try {
       await saveUserDB(userIdInfo);
-      log('데이터를 생성할건데용!');
     } catch (error) {
       throw new Error(error);
     }
-  } else {
-    log('이미 잇어서 안할건데용!');
   }
 
   // Get user data from DB
   const user = await getUserDB(accountId);
 
-  // This logic is for updating.
-  // However, we are discussing how to handle the logic of the update.
-  // So I commented out the logic.
-
-  /* if (await checkModifiedDate(user.modifiedDate)) {
-
-  } else {
-    return { err: 'NOTOVER3MINUTES' };
-  } */
-
   return user;
 };
 
 // export function(update)
-const updateUser = async (name) => {
-  const user = await getUserDbByName(accountId);
+// True, if update success
+// Fasle, if update fail
+module.exports.updateUser = async (accountId) => {
+  if (await checkModifiedDate(user.modifiedDate)) {
+    const updateBoolean = await updateUserDB(accountId);
+    return updateBoolean;
+  } else {
+    return { err: 'NOTOVER3MINUTES' };
+  }
 };
+
+
+const updateUserDB = async (accountId) => {
+  let user;
+  try{
+    user = await getUserDB(accountId);
+    const userIdInfo = await getUserId(user.name);
+
+    const leagueInfo = await getUserLeagueInfo(user.encryptedId);
+    const matchInfo = await getUserMatchInfo(user.encryptedAccountId, user.name);
+
+    for(const item of Object.keys(userIdInfo)) {
+      user[item] = userIdInfo[item];
+    }
+    for(const item of Object.keys(leagueInfo)) {
+      user[item] = leagueInfo[item];
+    };
+
+    for(const item of Object.keys(matchInfo)) {
+      user[item] = matchInfo[item];
+    };
+    user.modifiedDate = Date.now();
+
+  } catch(e) {
+    console.error(e);
+  }
+
+  try{
+    await user.save();
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
