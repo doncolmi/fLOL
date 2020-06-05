@@ -12,7 +12,7 @@ const userSchema = new Schema(
     rankScore: Number,
     win: Number,
     lose: Number,
-    etc: String,
+    etc: [String],
     recentMatch: String,
     recentLane: String,
     recentChampion: String,
@@ -25,6 +25,6 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.index({ name: 1 });
+userSchema.index({ name: 1, encryptedId: 1 });
 
 module.exports = mongoose.model('user', userSchema);

@@ -70,13 +70,22 @@ const getUserDB = async (accountId) => {
   }
 };
 
+const getUserDbByName = async (name) => {
+  try {
+    const user = await userSchema.findOne({ name: name });
+    return user;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 // count user's Data in MongoDB for getUserDB
 const cntIdByAccountId = async (accountId) => {
   try {
     const cnt = await userSchema
       .countDocuments({ encryptedAccountId: accountId })
       .catch((e) => console.error(e));
-    return cnt > 0;
+    return cnt < 1;
   } catch (error) {
     throw new Error(error);
   }
@@ -90,10 +99,10 @@ const getUserLeagueInfo = async (encryptedId) => {
 
   // make ETC info
   const etc = [];
-  if (league.veteran) res.push('veteran');
-  if (league.inactive) res.push('inactive');
-  if (league.freshBlood) res.push('freshBlood');
-  if (league.hotStreak) res.push('hotStreak');
+  if (data.veteran) etc.push('veteran');
+  if (data.inactive) etc.push('inactive');
+  if (data.freshBlood) etc.push('freshBlood');
+  if (data.hotStreak) etc.push('hotStreak');
 
   // return League Info
   return {
@@ -107,11 +116,11 @@ const getUserLeagueInfo = async (encryptedId) => {
 
 const getMatchObject = (matchData) => {
   const MatchObject = {
-    champions : [],
-    queue : [],
-    lane : [],
-    gameIds : []
-  }
+    champions: [],
+    queue: [],
+    lane: [],
+    gameIds: [],
+  };
   for (const elem of matchData) {
     MatchObject.champions.push(elem.champion + '');
     MatchObject.queue.push(elem.queue + '');
@@ -119,7 +128,7 @@ const getMatchObject = (matchData) => {
     if (MatchObject.gameIds.length < 5) MatchObject.gameIds.push(elem.gameId);
   }
   return MatchObject;
-}
+};
 
 const getRecentWinLose = async (gameIds, name) => {
   let recentWinLose = '';
@@ -154,7 +163,7 @@ const getRecentWinLose = async (gameIds, name) => {
   }
 
   return recentWinLose;
-}
+};
 
 const getUserMatchInfo = async (encryptedAccountId, name) => {
   const getUserMatchAPI = `https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${encryptedAccountId}?endIndex=30&beginIndex=0`;
@@ -164,20 +173,21 @@ const getUserMatchInfo = async (encryptedAccountId, name) => {
   const matchObject = getMatchObject(matchData);
   const winLose = await getRecentWinLose(matchObject.gameIds, name);
 
-
   return {
-    recentMatch : lolData.getQueue(getMax(matchObject.queue)),
-    recentLane : getMax(matchObject.lane),
-    recentChampion : lolData.champions[getMax(matchObject.champions)],
-    recentWinLose : winLose,
-  }
-}
+    recentMatch: lolData.getQueue(getMax(matchObject.queue)),
+    recentLane: getMax(matchObject.lane),
+    recentChampion: lolData.champions[getMax(matchObject.champions)],
+    recentWinLose: winLose,
+  };
+};
 
 const saveUserDB = async (info) => {
   const leagueInfo = await getUserLeagueInfo(info.encryptedId);
   const matchInfo = await getUserMatchInfo(info.encryptedAccountId, info.name);
   const saveUserData = Object.assign(info, leagueInfo, matchInfo);
-  console.log(saveUserData);
+  const testUser = new userSchema(saveUserData);
+
+  await testUser.save();
 };
 
 // export function
@@ -186,23 +196,36 @@ module.exports.getUser = async (name) => {
   const userIdInfo = await getUserId(validName);
   const accountId = userIdInfo.encryptedAccountId;
 
+  // If there is no user data,
+  // Create and store data
   if (await cntIdByAccountId(accountId)) {
-    const user = await getUserDB(accountId);
-    if (await checkModifiedDate(user.modifiedDate)) {
-    } else {
-      return { err: 'NOTOVER3MINUTES' };
-    }
-  } else {
     try {
       await saveUserDB(userIdInfo);
+      log('데이터를 생성할건데용!');
     } catch (error) {
       throw new Error(error);
     }
+  } else {
+    log('이미 잇어서 안할건데용!');
   }
 
-  // name, encryptedId, encryptedAccountId, level in userIdInfo
-  return userIdInfo;
+  // Get user data from DB
+  const user = await getUserDB(accountId);
+
+  // This logic is for updating.
+  // However, we are discussing how to handle the logic of the update.
+  // So I commented out the logic.
+
+  /* if (await checkModifiedDate(user.modifiedDate)) {
+
+  } else {
+    return { err: 'NOTOVER3MINUTES' };
+  } */
+
+  return user;
 };
 
-
-
+// export function(update)
+const updateUser = async (name) => {
+  const user = await getUserDbByName(accountId);
+};

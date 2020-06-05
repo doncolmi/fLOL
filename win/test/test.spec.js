@@ -12,23 +12,8 @@ mongo();
 
 const userSchema = require('../model/userSchema');
 
-
-
-const getQueue = (queue) => {
-  if (queue === '420') return '솔랭';
-  if (queue === '430') return '일겜';
-  if (queue === '440') return '자랭';
-  if (queue === '450') return '칼바람';
-  if (queue === '900') return '우르프';
-  if (queue === '910') return '초월';
-  if (queue === '920') return '포로왕';
-  if (queue === '1200') return '돌격 넥서스';
-  if (queue === '1010') return '칼바람';
-  return '기타게임';
-};
-
 const testUser = new userSchema({
-  ogName : 'test',
+  ogName: 'test',
   name: 'test',
   encryptedId: 'test',
   encryptedAccountId: 'test',
@@ -83,8 +68,15 @@ describe('getUser', async function () {
     );
   });
 
+  it('saveUser', async function () {
+    this.timeout(5000);
+    const testUser = await test.getUser('물총총');
+    log(testUser);
+    assert.isObject(testUser);
+  });
+
   after(() => {
-    userSchema.deleteOne({ name: 'test' }, (err, res) => {
+    userSchema.remove({}, (err, res) => {
       if (err) return handleError(err);
       log(`Delete data!`);
     });
