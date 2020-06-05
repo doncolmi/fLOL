@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
+    ogName: String,
     name: String,
     encryptedId: String,
     encryptedAccountId: String,
@@ -13,6 +14,7 @@ const userSchema = new Schema(
     lose: Number,
     etc: String,
     recentMatch: String,
+    recentLane: String,
     recentChampion: String,
     recentWinLose: String,
     createdDate: { type: Date, default: Date.now },
