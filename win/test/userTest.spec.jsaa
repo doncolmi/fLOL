@@ -75,13 +75,6 @@ describe('getUser', async function () {
     assert.isObject(testUser);
   });
 
-  it('updateUsers', async function() {
-    const testUser = await test.getUser('물총총');
-    const dummy = await test.updateUser(testUser.encryptedAccountId);
-    const testUsers = await test.getUser('물총총');
-    assert.isTrue(dummy);
-  });
-
   after(() => {
     userSchema.remove({}, (err, res) => {
       if (err) return handleError(err);

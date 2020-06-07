@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 
 const groupSchema = new Schema(
   {
-    name: { type: String, unique: true, index : true },
-    
+    name: { type: String, unique: true, index: true },
+    members: [String],
+    membersNum: Number,
     createdDate: { type: Date, default: Date.now },
     modifiedDate: { type: Date, default: Date.now },
   },
@@ -13,6 +14,6 @@ const groupSchema = new Schema(
   }
 );
 
-groupSchema.index({ name: 1, encryptedId: 1 });
+groupSchema.index({ name: 1 });
 
 module.exports = mongoose.model('group', groupSchema);

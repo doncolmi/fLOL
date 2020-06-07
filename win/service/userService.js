@@ -30,6 +30,7 @@ const Headers = {
   'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
   'X-Riot-Token': '',
 };
+
 const Config = () => {
   Headers['X-Riot-Token'] = process.env.KEY;
   return {
@@ -39,19 +40,23 @@ const Config = () => {
 
 // get User name, eId, EAccountID, level
 const getUserId = async (name) => {
-  const getUserIdAPI =
-    `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/` +
-    encodeURI(name);
+  try {
+    const getUserIdAPI =
+      `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/` +
+      encodeURI(name);
 
-  const user = await axios.get(getUserIdAPI, Config());
-  const result = {
-    ogName: user.data.name,
-    name: name,
-    encryptedId: user.data.id,
-    encryptedAccountId: user.data.accountId,
-    level: user.data.summonerLevel,
-  };
-  return result;
+    const user = await axios.get(getUserIdAPI, Config());
+
+    return {
+      ogName: user.data.name,
+      name: name,
+      encryptedId: user.data.id,
+      encryptedAccountId: user.data.accountId,
+      level: user.data.summonerLevel,
+    };
+  } catch (e) {
+    return { ERROR: 'NOTFOUND' };
+  }
 };
 
 // check user's modifiedDate over 3 minutes
@@ -90,6 +95,16 @@ const getUserLeagueInfo = async (encryptedId) => {
   // 만약 언랭일때는 데이터가 []로 들어오는데
   // []일때는 언랭이므로 따로 처리해줘야함
   // 이거 말고도 전적이 10회 아래면 오류 뜨는거 처리해줘야 할듯;
+  if (data === []) {
+    return {
+      rankTier: `UNRANK`,
+      rankScore: 0,
+      battleScore: 0,
+      win: 0,
+      lose: 0,
+      etc: [],
+    };
+  }
 
   // make ETC info
   const etc = [];
@@ -102,7 +117,10 @@ const getUserLeagueInfo = async (encryptedId) => {
   return {
     rankTier: `${data.tier} ${data.rank}`,
     rankScore: `${data.leaguePoints}`,
-    battleScore: lolData.getBattleScore(`${data.tier} ${data.rank}`, data.leaguePoints),
+    battleScore: lolData.getBattleScore(
+      `${data.tier} ${data.rank}`,
+      data.leaguePoints
+    ),
     win: data.wins,
     lose: data.losses,
     etc: etc,
@@ -166,7 +184,11 @@ const getUserMatchInfo = async (encryptedAccountId, name) => {
   const matchData = [...matches.data.matches];
 
   const matchObject = getMatchObject(matchData);
-  const winLose = await getRecentWinLose(matchObject.gameIds, name);
+
+  let winLose = 'UNRANK';
+  if (matchData.length > 5) {
+    winLose = await getRecentWinLose(matchObject.gameIds, name);
+  }
 
   return {
     recentMatch: lolData.getQueue(getMax(matchObject.queue)),
@@ -189,6 +211,7 @@ const saveUserDB = async (info) => {
 module.exports.getUser = async (name) => {
   const validName = name.replace(/(\s*)/g, '').toLowerCase();
   const userIdInfo = await getUserId(validName);
+  if (userIdInfo.ERROR) return userIdInfo;
   const accountId = userIdInfo.encryptedAccountId;
 
   // If there is no user data,
@@ -219,36 +242,37 @@ module.exports.updateUser = async (accountId) => {
   }
 };
 
-
 const updateUserDB = async (accountId) => {
   let user;
-  try{
+  try {
     user = await getUserDB(accountId);
     const userIdInfo = await getUserId(user.name);
 
     const leagueInfo = await getUserLeagueInfo(user.encryptedId);
-    const matchInfo = await getUserMatchInfo(user.encryptedAccountId, user.name);
+    const matchInfo = await getUserMatchInfo(
+      user.encryptedAccountId,
+      user.name
+    );
 
-    for(const item of Object.keys(userIdInfo)) {
+    for (const item of Object.keys(userIdInfo)) {
       user[item] = userIdInfo[item];
     }
-    for(const item of Object.keys(leagueInfo)) {
+    for (const item of Object.keys(leagueInfo)) {
       user[item] = leagueInfo[item];
-    };
+    }
 
-    for(const item of Object.keys(matchInfo)) {
+    for (const item of Object.keys(matchInfo)) {
       user[item] = matchInfo[item];
-    };
+    }
     user.modifiedDate = Date.now();
-
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
 
-  try{
+  try {
     await user.save();
     return true;
-  } catch(e) {
+  } catch (e) {
     return false;
   }
-}
+};
