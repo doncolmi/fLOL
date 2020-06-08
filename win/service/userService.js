@@ -200,9 +200,9 @@ const saveUserDB = async (info) => {
   const leagueInfo = await getUserLeagueInfo(info.encryptedId);
   const matchInfo = await getUserMatchInfo(info.encryptedAccountId, info.name);
   const saveUserData = Object.assign(info, leagueInfo, matchInfo);
-  const testUser = new userSchema(saveUserData);
+  const user = new userSchema(saveUserData);
 
-  await testUser.save();
+  await user.save();
 };
 
 // export function
@@ -232,6 +232,7 @@ module.exports.getUser = async (name) => {
 // True, if update success
 // Fasle, if update fail
 module.exports.updateUser = async (accountId) => {
+  const user = await getUserDB(accountId);
   if (await checkModifiedDate(user.modifiedDate)) {
     const updateBoolean = await updateUserDB(accountId);
     return updateBoolean;

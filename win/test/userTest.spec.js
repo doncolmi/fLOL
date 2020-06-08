@@ -16,14 +16,14 @@ describe('userTest', async function () {
     return mongo.connect(`mongodb://flol:1234@localhost:27017/flol`, {
       useNewUrlParser: true,
       useFindAndModify: false,
-      useCreateIndex : true,
-      useUnifiedTopology: true
-    }).then(() => console.log("헬로우"));
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+    });
   });
 
   it('getUserCheckName', async function () {
+    this.timeout(10000);
     const { name } = await test.getUser('물총총');
-    console.log(name);
     assert.deepEqual(name, '물총총', 'user.name과 닉네임이 같은가?');
   });
 
@@ -33,7 +33,6 @@ describe('userTest', async function () {
   });
 
   it('getUserMongoCheckedId', function (done) {
-
     userSchema.countDocuments({ name: '물총총' }, (err, count) => {
       if (count > 0) {
         log(`count is ${count}!`);
@@ -59,7 +58,7 @@ describe('userTest', async function () {
     assert.isObject(testUser);
   });
 
-  it('deleteUser', async function() {
+  it('deleteUser', async function () {
     const testUser = await test.getUser('물총총');
     testUser.deleteOne();
   });
