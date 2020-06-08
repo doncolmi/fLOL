@@ -36,8 +36,17 @@
 - **API**
     - user 관련
 
-        POST "/user" - 유저 등록
-
-        GET "/user/:name" - 유저 조회
+        GET "/user/:name" - 유저 조회 및 저장
 
         PUT "/user/:name" - 유저 정보 갱신
+    - group 관련
+
+        POST "/group" - 그룹 생성
+
+        GET "/group/:name" - 그룹 조회
+
+        PUT "/group/:name" - 그룹 수정
+
+        DELETE "/group/:name - 그룹 삭제
+
+        

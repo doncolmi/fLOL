@@ -45,14 +45,14 @@ const getUserId = async (name) => {
       `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/` +
       encodeURI(name);
 
-    const user = await axios.get(getUserIdAPI, Config());
+    const { data } = await axios.get(getUserIdAPI, Config());
 
     return {
-      ogName: user.data.name,
+      ogName: data.name,
       name: name,
-      encryptedId: user.data.id,
-      encryptedAccountId: user.data.accountId,
-      level: user.data.summonerLevel,
+      encryptedId: data.id,
+      encryptedAccountId: data.accountId,
+      level: data.summonerLevel,
     };
   } catch (e) {
     return { ERROR: 'NOTFOUND' };
@@ -92,9 +92,7 @@ const getUserLeagueInfo = async (encryptedId) => {
   const getUserLeagueAPI = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedId}`;
   const league = await axios.get(getUserLeagueAPI, Config());
   const data = league.data[0];
-  // 만약 언랭일때는 데이터가 []로 들어오는데
-  // []일때는 언랭이므로 따로 처리해줘야함
-  // 이거 말고도 전적이 10회 아래면 오류 뜨는거 처리해줘야 할듯;
+
   if (data === []) {
     return {
       rankTier: `UNRANK`,
@@ -148,12 +146,12 @@ const getRecentWinLose = async (gameIds, name) => {
 
   for (const id of gameIds) {
     const matchAPI = `https://kr.api.riotgames.com/lol/match/v4/matches/${id}`;
-    const match = await axios.get(matchAPI, Config());
-    const teams = match.data.teams[0];
+    const { data } = await axios.get(matchAPI, Config());
+    const teams = data.teams[0];
     if (teams.win === 'Win') {
       let winLose = false;
       for (let i = 0; i < 5; i++) {
-        const member = match.data.participantIdentities[i].player.summonerName
+        const member = data.participantIdentities[i].player.summonerName
           .replace(/(\s*)/g, '')
           .toLowerCase();
         if (member === name) {
@@ -164,7 +162,7 @@ const getRecentWinLose = async (gameIds, name) => {
     } else {
       let winLose = true;
       for (let i = 0; i < 5; i++) {
-        const member = match.data.participantIdentities[i].player.summonerName
+        const member = data.participantIdentities[i].player.summonerName
           .replace(/(\s*)/g, '')
           .toLowerCase();
         if (member === name) {
@@ -180,8 +178,8 @@ const getRecentWinLose = async (gameIds, name) => {
 
 const getUserMatchInfo = async (encryptedAccountId, name) => {
   const getUserMatchAPI = `https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${encryptedAccountId}?endIndex=30&beginIndex=0`;
-  const matches = await axios.get(getUserMatchAPI, Config());
-  const matchData = [...matches.data.matches];
+  const { data } = await axios.get(getUserMatchAPI, Config());
+  const matchData = [...data.matches];
 
   const matchObject = getMatchObject(matchData);
 
