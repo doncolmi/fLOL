@@ -41,11 +41,12 @@ describe('groupTest', async function () {
 
   it('addAndRemoveMember', async function () {
     this.timeout(15000);
-    const memberArr = ['물총총', 'hideonbush', '깜짝 돌진', '박정훈 발때'];
+    const memberArr = ['물총총', 'hideonbush', '깜짝 돌진', 'KORNINA'];
     const memberDataArr = [];
     for (const item of memberArr) {
-      const code = await userTest.getUser(item);
-      memberDataArr.push(code.encryptedAccountId);
+      const { encryptedAccountId } = await userTest.getUser(item);
+      log(encryptedAccountId);
+      memberDataArr.push(encryptedAccountId);
     }
 
     const updateList = {
@@ -58,6 +59,11 @@ describe('groupTest', async function () {
       log(group);
       assert.notInclude(group.members, 'test');
     }
+  });
+
+  it('countCode', async function() {
+    const cnt = await test.countCode('AZZZZZ');
+    assert.isBelow(cnt, 1);
   });
 
   it('updateUser', function (done) {

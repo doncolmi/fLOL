@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const groupSchema = new Schema(
   {
-    name: { type: String, unique: true, index: true, required: true },
+    name: { type: String, index: true, required: true },
     code: { type: String, unique: true, index: true, required: true },
     members: { type: [String], default: [] },
     membersNum: { type: Number, default: 0 },
