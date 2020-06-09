@@ -55,6 +55,7 @@ describe('groupTest', async function () {
 
     if (await test.updateMemberList('Hello', updateList)) {
       const group = await groupSchema.findOne({ name: 'Hello' });
+      log(group);
       assert.notInclude(group.members, 'test');
     }
   });

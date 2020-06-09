@@ -3,6 +3,8 @@ const groupSchema = require('../model/groupSchema');
 
 const log = console.log;
 
+const 
+
 const addMember = (group, accountId) => {
   group.members.push(accountId);
   group.membersNum += 1;

@@ -22,7 +22,7 @@
     PORT=원하는 포트 번호
 
     # FOR LOL API
-    LOL_KEY=자신의 롤 개발 API
+    KEY=자신의 롤 개발 API
 
     # MONGO
     ID = 몽고DB계정ID
