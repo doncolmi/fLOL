@@ -41,11 +41,10 @@ describe('groupTest', async function () {
 
   it('addAndRemoveMember', async function () {
     this.timeout(15000);
-    const memberArr = ['물총총', 'hideonbush', '깜짝 돌진', 'KORNINA'];
+    const memberArr = ['물총총', 'hideonbush', '깜짝 돌진', '롤'];
     const memberDataArr = [];
     for (const item of memberArr) {
       const { encryptedAccountId } = await userTest.getUser(item);
-      log(encryptedAccountId);
       memberDataArr.push(encryptedAccountId);
     }
 
@@ -61,9 +60,9 @@ describe('groupTest', async function () {
     }
   });
 
-  it('countCode', async function() {
-    const cnt = await test.countCode('AZZZZZ');
-    assert.isBelow(cnt, 1);
+  it('countCode', async function () {
+    const cntBelowOne = await test.countCode('AZZZZZ');
+    assert.isTrue(cntBelowOne);
   });
 
   it('updateUser', function (done) {

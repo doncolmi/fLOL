@@ -90,10 +90,11 @@ const cntIdByAccountId = async (accountId) => {
 const getUserLeagueInfo = async (encryptedId) => {
   // getLeagueInfo
   const getUserLeagueAPI = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedId}`;
-  const league = await axios.get(getUserLeagueAPI, Config());
-  const data = league.data[0];
-
-  if (data === []) {
+  let { data } = await axios.get(getUserLeagueAPI, Config());
+  if (data[0]) {
+    data = data[0];
+  } else {
+    log('언랭으로추가');
     return {
       rankTier: `UNRANK`,
       rankScore: 0,
@@ -178,13 +179,21 @@ const getRecentWinLose = async (gameIds, name) => {
 
 const getUserMatchInfo = async (encryptedAccountId, name) => {
   const getUserMatchAPI = `https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${encryptedAccountId}?endIndex=30&beginIndex=0`;
-  const { data } = await axios.get(getUserMatchAPI, Config());
-  const matchData = [...data.matches];
+  const match = await axios.get(getUserMatchAPI, Config()).catch((err) => {
+    return {
+      recentMatch: 'UNRANK',
+      recentLane: 'UNRANK',
+      recentChampion: 'UNRANK',
+      recentWinLose: '',
+    };
+  });
+
+  const matchData = [...match.data.matches];
 
   const matchObject = getMatchObject(matchData);
 
   let winLose = 'UNRANK';
-  if (matchData.length > 5) {
+  if (matchData.length > 4) {
     winLose = await getRecentWinLose(matchObject.gameIds, name);
   }
 
@@ -198,10 +207,19 @@ const getUserMatchInfo = async (encryptedAccountId, name) => {
 
 const saveUserDB = async (info) => {
   const leagueInfo = await getUserLeagueInfo(info.encryptedId);
-  const matchInfo = await getUserMatchInfo(info.encryptedAccountId, info.ogName);
+  let matchInfo;
+  try {
+    matchInfo = await getUserMatchInfo(info.encryptedAccountId, info.ogName);
+  } catch (e) {
+    matchInfo = {
+      recentMatch: 'UNRANK',
+      recentLane: 'UNRANK',
+      recentChampion: 'UNRANK',
+      recentWinLose: '',
+    };
+  }
   const saveUserData = Object.assign(info, leagueInfo, matchInfo);
   const user = new userSchema(saveUserData);
-  
 
   await user.save();
 };
@@ -211,7 +229,6 @@ module.exports.getUser = async (name) => {
   const validName = name.replace(/(\s*)/g, '').toLowerCase();
   const userIdInfo = await getUserId(validName);
   if (userIdInfo.ERROR) return userIdInfo;
-  log(userIdInfo);
   const accountId = userIdInfo.encryptedAccountId;
 
   // If there is no user data,
