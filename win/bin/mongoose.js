@@ -23,7 +23,7 @@ module.exports = () => {
             if (err) {
                 console.log('MONGO FAIL : mongodb connection error ...', err);
                 return;
-            } 
+            }
             console.log('MONGO SUCCESS : mongodb connected');
         });
     }

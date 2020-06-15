@@ -1,6 +1,6 @@
 <template>
     <header>
-        <h1>TODO it!</h1>
+        <h1>롤 유저 검색 / 그룹 찾기</h1>
     </header>
 </template>
 

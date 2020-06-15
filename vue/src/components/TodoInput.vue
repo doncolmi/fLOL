@@ -1,18 +1,14 @@
 <template>
     <div class="inputBox shadow">
-        <input type="text" v-model="newTodoItem" placeholder="오늘 해야할 일을 적어주세요." v-on:keyup.enter="addTodo">
+        <input type="text" id="inputForm" v-model="newTodoItem" placeholder="유저 이름을 검색해주세요" v-on:keyup.enter="addTodo">
         <span class="addContainer" v-on:click="addTodo" >
             <i class="addBtn fa fa-plus" aria-hidden="true"></i>
         </span>
-
-        <modal v-if="showModal" @close="showModal = false">
-            <h3 slot="header">경고</h3>
-            <span slot="footer" @click="showModal = false">
-                할 일을 입력하세요.
-                <i class="closeModalBtn fa fa-times" aria-hidden="true"></i>
-            </span>
-        </modal>
+        <div class="inputText" id="inputText">
+            뭐더냐 시벌
+        </div>
     </div>
+    
 </template>
 
 <script>
@@ -37,7 +33,7 @@ export default {
         },
         clearInput() {
             this.newTodoItem = '';
-        }
+        },
     },
     components: {
         Modal: Modal
@@ -47,10 +43,12 @@ export default {
 
 <style>
     .inputBox {
+        width: 50%;
         background: white;
         height: 50px;
         line-height: 50px;
-        border-radius: 5px;
+        border-radius: 10px;
+        margin: 0 auto;
         
     }
     .inputBox input {
@@ -73,4 +71,10 @@ export default {
         color: white;
         vertical-align: middle;
     }
+
+    .inputText {
+        width: 80%;
+        display:none;
+    }
+
 </style>
