@@ -179,18 +179,32 @@ const getRecentWinLose = async (gameIds, name) => {
 
 const getUserMatchInfo = async (encryptedAccountId, name) => {
   const getUserMatchAPI = `https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${encryptedAccountId}?endIndex=30&beginIndex=0`;
-  const match = await axios.get(getUserMatchAPI, Config()).catch((err) => {
+  let match;
+  try {
+    match = await axios.get(getUserMatchAPI, Config());
+  } catch (e) {
     return {
       recentMatch: 'UNRANK',
       recentLane: 'UNRANK',
       recentChampion: 'UNRANK',
       recentWinLose: '',
     };
-  });
+  }
 
   const matchData = [...match.data.matches];
 
-  const matchObject = getMatchObject(matchData);
+  let matchObject;
+  try {
+    matchObject = getMatchObject(matchData);
+  } catch (e) {
+    console.log('엥??');
+    return {
+      recentMatch: 'UNRANK',
+      recentLane: 'UNRANK',
+      recentChampion: 'UNRANK',
+      recentWinLose: '',
+    };
+  }
 
   let winLose = 'UNRANK';
   if (matchData.length > 4) {

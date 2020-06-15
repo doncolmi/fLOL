@@ -12,16 +12,12 @@ require('dotenv').config();
 
 const groupSchema = require('../model/groupSchema');
 
-const testGroup = new groupSchema({
+const testGroup = {
   name: 'Hello',
-  code: '3XSVHA',
-  members: ['test'],
-  membersNum: 1,
   open: true,
   password: 'pass',
   adminPassword: 'pass',
-  salt: 'pass',
-});
+};
 
 describe('groupTest', async function () {
   before(() => {
@@ -34,8 +30,9 @@ describe('groupTest', async function () {
   });
 
   it('saveGroup', async function () {
-    testGroup.save();
+    await test.saveGroup(testGroup);
     const group = await groupSchema.findOne({ name: 'Hello' });
+    log(group);
     assert.isObject(group);
   });
 
@@ -50,19 +47,13 @@ describe('groupTest', async function () {
 
     const updateList = {
       addMember: memberDataArr,
-      removeMember: ['test'],
+      removeMember: [memberDataArr[0]],
     };
 
     if (await test.updateMemberList('Hello', updateList)) {
       const group = await groupSchema.findOne({ name: 'Hello' });
-      log(group);
-      assert.notInclude(group.members, 'test');
+      assert.notInclude(group.members, '물총총');
     }
-  });
-
-  it('countCode', async function () {
-    const cntBelowOne = await test.countCode('AZZZZZ');
-    assert.isTrue(cntBelowOne);
   });
 
   it('updateUser', function (done) {
@@ -97,7 +88,7 @@ describe('groupTest', async function () {
 
   it('deleteGroup', async function () {
     const group = await groupSchema.findOne({ name: 'Hello' });
-    group.deleteOne();
+    await test.deleteGroup(group.code);
   });
 
   after((done) => {
