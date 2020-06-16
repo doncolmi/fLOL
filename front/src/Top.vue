@@ -1,45 +1,22 @@
 <template>
-  <div id="app">
-      
-  </div>
+  <header>
+      <h1>
+          검색기능
+      </h1>
+  </header>
 </template>
 
 <script>
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+header h1 {
+    font-family: 'Black Han Sans';
+    font-size: 3rem;
 }
 </style>
