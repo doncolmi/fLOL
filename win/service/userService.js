@@ -1,6 +1,6 @@
 const axios = require('axios');
 const userSchema = require('../model/userSchema');
-const lolData = require('../model/lolData');
+const lolData = require('../model/data/lolData');
 
 const log = console.log;
 
