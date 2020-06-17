@@ -18,5 +18,6 @@ export default {
 header h1 {
     font-family: 'Black Han Sans';
     font-size: 3rem;
+    font-weight: normal;
 }
 </style>
