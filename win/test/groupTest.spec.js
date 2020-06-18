@@ -38,7 +38,7 @@ describe('groupTest', async function () {
 
   it('addAndRemoveMember', async function () {
     this.timeout(15000);
-    const memberArr = ['물총총', 'hideonbush', '깜짝 돌진', '롤'];
+    const memberArr = ['물총총', 'hideonbush', 'No talk man', '롤'];
     const memberDataArr = [];
     for (const item of memberArr) {
       const { encryptedAccountId } = await userTest.getUser(item);

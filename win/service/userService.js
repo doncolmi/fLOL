@@ -101,16 +101,8 @@ const getUserLeagueInfo = async (encryptedId) => {
       battleScore: 0,
       win: 0,
       lose: 0,
-      etc: [],
     };
   }
-
-  // make ETC info
-  const etc = [];
-  if (data.veteran) etc.push('veteran');
-  if (data.inactive) etc.push('inactive');
-  if (data.freshBlood) etc.push('freshBlood');
-  if (data.hotStreak) etc.push('hotStreak');
 
   // return League Info
   return {
@@ -122,7 +114,6 @@ const getUserLeagueInfo = async (encryptedId) => {
     ),
     win: data.wins,
     lose: data.losses,
-    etc: etc,
   };
 };
 
@@ -219,6 +210,61 @@ const getUserMatchInfo = async (encryptedAccountId, name) => {
   };
 };
 
+const setUserEtc = async(object) => {
+  const etc = [];
+  if(object.recentMatch === 'UNRANK' 
+  && object.recentLane === 'UNRANK'
+  && object.recentChampion === 'UNRANK'
+  && object.recentWinLose === ''
+  && object.rankTier === 'UNRANK'
+  && object.win === 0
+  && object.lose === 0) {
+    etc.push('ghost');
+  } else if(object.rankTier === 'UNRANK') {
+    etc.push('unrank');
+  }
+
+  if(object.rankTier.includes('IRON') || object.rankTier.includes('BRONZE')) {
+    etc.push('simhae');
+  } else if(object.rankTier.includes('SILVER') || object.rankTier.includes('GOLD')) {
+    etc.push('silverGold');
+  } else if(object.rankTier.includes('PLATINUM')) {
+    etc.push('platinum');
+  } else if(object.rankTier.includes('DIAMOND')) {
+    etc.push('diamond');
+  } else if(object.rankTier.includes('MATSER') && !(object.rankTier.includes('GRANDMASTER'))) {
+    etc.push('master');
+  } else if(object.rankTier.includes('GRANDMASTER')) {
+    etc.push('grandMaster');
+  } else if(object.rankTier.includes('CHALLENGER')) {
+    etc.push('challenger');
+  }
+
+  if(object.recentLane === 'MID') {
+    etc.push('mid');
+  } else if(object.recentLane === 'TOP') {
+    etc.push('top');
+  } else if(object.recentLane === 'BOT') {
+    etc.push('ad');
+  } else if(object.recentLane === 'SUPPORT') {
+    etc.push('sup');
+  } else if(object.recentLane === 'JUNGLE') {
+    etc.push('jungle');
+  }
+
+  if(object.recentWinLose.substring(0,3) === 'WWW') {
+    etc.push('3WinningStreak');
+  } else if(object.recentWinLose.substring(0,4) === 'WWWW'){
+    etc.push('4WinningStreak');
+  } else if(object.recentWinLose === 'WWWWW') {
+    etc.push('5WinningStreak');
+  }
+
+  object.etc = etc;
+  console.log(etc);
+  return object;
+}
+
 const saveUserDB = async (info) => {
   const leagueInfo = await getUserLeagueInfo(info.encryptedId);
   let matchInfo;
@@ -232,8 +278,10 @@ const saveUserDB = async (info) => {
       recentWinLose: '',
     };
   }
-  const saveUserData = Object.assign(info, leagueInfo, matchInfo);
-  const user = new userSchema(saveUserData);
+  
+  const userDataObject = Object.assign(info, leagueInfo, matchInfo);
+  const userDataEtcObject = await setUserEtc(userDataObject);
+  const user = new userSchema(userDataEtcObject);
 
   await user.save();
 };
@@ -298,6 +346,7 @@ const updateUserDB = async (accountId) => {
       user[item] = matchInfo[item];
     }
     user.modifiedDate = Date.now();
+    user.etc = await setUserEtc(user);
   } catch (e) {
     console.error(e);
   }

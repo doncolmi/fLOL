@@ -8,10 +8,10 @@
                     </span> 
                 </div>
                 <div class="toastBridge"></div>
-                <div class="toastContents">
-                    <div class="toastTitle"><a class="caution">⚠주의⚠</a> 심해냄새가 납니다!</div>
+                <div class="toastContents" :style="style">
+                    <div class="toastTitle"><a class="caution">{{ this.sendData.title }}</a></div>
                     <div class="toastContent">
-                            이 문서의 주인 {{ $route.params.ogName }}은 아이언, 브론즈에 거주하고있을 확률이 높습니다. 심해냄새에 면역이 없다면 이 문서를 빠르게 나가십시오.
+                        {{ this.sendData.content.replace('[name]', this.ogName) }}
                     </div>
                 </div>
             </div>
@@ -20,12 +20,16 @@
 </template>
 <script>
 export default {
+    props: ['sendData', 'ogName'],
     created() {
     },
     data : function() {
         return {
-            show : true
+            show : true,
+            style : `background-image:url('../../src${this.sendData.img}'); background-repeat:no-repeat; background-position: 97% 65%; background-size: 9%`
         }
+    },
+    methods: {
     }
 }
 </script>
@@ -59,6 +63,12 @@ export default {
 .blueToast .topToast {
     background-color:#45aaf2;
 }
+.greenToast .topToast {
+    background-color:#27ae60;
+}
+.blackToast .topToast {
+    background-color:#000000;
+}
 
 .closeBtn {
     color:white;
@@ -81,15 +91,23 @@ export default {
     border-left: 2px solid #45aaf2;
     border-right: 2px solid #45aaf2;
 }
+.greenToast .toastBridge {
+    border-left: 2px solid #27ae60;
+    border-right: 2px solid #27ae60;
+}
+.blackToast .toastBridge {
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+}
 
 .toastContents{
     padding: 0.5% 1% 2% 1%;
     border-radius: 0px 0px 20px 20px;
     font-family: 'Noto Sans KR', sans-serif;
-    background-image:url("../../assets/toast/simhae.png");
-    background-repeat: no-repeat;
-    background-position: 98% 75%;
-    background-size: 10%;
+    background-image:url(`../../src${this.sendData.img}`); 
+    background-repeat:no-repeat; 
+    background-position: 97% 65%;
+     background-size: 9%;
 }
 
 .redToast .toastContents{
@@ -100,6 +118,14 @@ export default {
     border: 2px solid #45aaf2;
     border-top: 0;
 }
+.greenToast .toastContents{
+    border: 2px solid #27ae60;
+    border-top: 0;
+}
+.blackToast .toastContents{
+    border: 2px solid #000000;
+    border-top: 0;
+}
 
 .toastTitle {
     font-family: 'Black Han Sans';
@@ -107,9 +133,7 @@ export default {
     text-align:center;
     margin-bottom:1%;
 }
-.caution {
-    font-weight: bold;
-}
+
 .toastContent{
     font-size:1.1em;
 }
