@@ -210,60 +210,96 @@ const getUserMatchInfo = async (encryptedAccountId, name) => {
   };
 };
 
-const setUserEtc = async(object) => {
+const setUserEtc = async (object) => {
   const etc = [];
-  if(object.recentMatch === 'UNRANK' 
-  && object.recentLane === 'UNRANK'
-  && object.recentChampion === 'UNRANK'
-  && object.recentWinLose === ''
-  && object.rankTier === 'UNRANK'
-  && object.win === 0
-  && object.lose === 0) {
+  if (
+    object.recentMatch === 'UNRANK' &&
+    object.recentLane === 'UNRANK' &&
+    object.recentChampion === 'UNRANK' &&
+    object.recentWinLose === '' &&
+    object.rankTier === 'UNRANK' &&
+    object.win === 0 &&
+    object.lose === 0
+  ) {
     etc.push('ghost');
-  } else if(object.rankTier === 'UNRANK') {
+  } else if (object.rankTier === 'UNRANK') {
     etc.push('unrank');
   }
 
-  if(object.rankTier.includes('IRON') || object.rankTier.includes('BRONZE')) {
+  if (object.rankTier.includes('IRON') || object.rankTier.includes('BRONZE')) {
     etc.push('simhae');
-  } else if(object.rankTier.includes('SILVER') || object.rankTier.includes('GOLD')) {
+  } else if (
+    object.rankTier.includes('SILVER') ||
+    object.rankTier.includes('GOLD')
+  ) {
     etc.push('silverGold');
-  } else if(object.rankTier.includes('PLATINUM')) {
+  } else if (object.rankTier.includes('PLATINUM')) {
     etc.push('platinum');
-  } else if(object.rankTier.includes('DIAMOND')) {
+  } else if (object.rankTier.includes('DIAMOND')) {
     etc.push('diamond');
-  } else if(object.rankTier.includes('MATSER') && !(object.rankTier.includes('GRANDMASTER'))) {
+  } else if (
+    object.rankTier.includes('MATSER') &&
+    !object.rankTier.includes('GRANDMASTER')
+  ) {
     etc.push('master');
-  } else if(object.rankTier.includes('GRANDMASTER')) {
+  } else if (object.rankTier.includes('GRANDMASTER')) {
     etc.push('grandMaster');
-  } else if(object.rankTier.includes('CHALLENGER')) {
+  } else if (object.rankTier.includes('CHALLENGER')) {
     etc.push('challenger');
   }
 
-  if(object.recentLane === 'MID') {
+  if (object.recentLane === 'MID') {
     etc.push('mid');
-  } else if(object.recentLane === 'TOP') {
+  } else if (object.recentLane === 'TOP') {
     etc.push('top');
-  } else if(object.recentLane === 'BOT') {
+  } else if (object.recentLane === 'BOT') {
     etc.push('ad');
-  } else if(object.recentLane === 'SUPPORT') {
+  } else if (object.recentLane === 'SUPPORT') {
     etc.push('sup');
-  } else if(object.recentLane === 'JUNGLE') {
+  } else if (object.recentLane === 'JUNGLE') {
     etc.push('jungle');
   }
 
-  if(object.recentWinLose === 'WWWWW') {
+  if (object.recentWinLose === 'WWWWW') {
     etc.push('5WinningStreak');
-  } else if(object.recentWinLose.substring(0,4) === 'WWWW'){
+  } else if (object.recentWinLose.substring(0, 4) === 'WWWW') {
     etc.push('4WinningStreak');
-  } else if(object.recentWinLose.substring(0,3) === 'WWW') {
+  } else if (object.recentWinLose.substring(0, 3) === 'WWW') {
     etc.push('3WinningStreak');
-  } 
+  }
+
+  if (object.level > 29 && object.level < 50) {
+    etc.push('levelFifty');
+  } else if (object.level >= 50 && object.level < 150) {
+    etc.push('levelOnehundred');
+  } else if (object.level >= 150 && object.level < 250) {
+    etc.push('levelOnehundredFifty');
+  } else if (object.level >= 250 && object.level < 300) {
+    etc.push('levelTwohundredFifty');
+  } else if (object.level >= 300 && object.level < 500) {
+    etc.push('levelThreehundred');
+  } else if (object.level >= 500 && object.level < 1000) {
+    etc.push('levelFivehundred');
+  } else if (object.level >= 1000 && object.level < 5000) {
+    etc.push('levelOneK');
+  }
+
+  if (object.recentMatch === '솔랭') {
+    etc.push('soloRank');
+  } else if (object.recentMatch === '일겜') {
+    etc.push('defalut');
+  } else if (object.recentMatch === '자랭') {
+    etc.push('freeRank');
+  } else if (object.recentMatch === '칼바람') {
+    etc.push('swordWind');
+  } else if (object.recentMatch !== 'UNRANK' && object.recentMatch) {
+    etc.push('freeRank');
+  }
 
   object.etc = etc;
   console.log(etc);
   return object;
-}
+};
 
 const saveUserDB = async (info) => {
   const leagueInfo = await getUserLeagueInfo(info.encryptedId);
@@ -278,7 +314,7 @@ const saveUserDB = async (info) => {
       recentWinLose: '',
     };
   }
-  
+
   const userDataObject = Object.assign(info, leagueInfo, matchInfo);
   const userDataEtcObject = await setUserEtc(userDataObject);
   const user = new userSchema(userDataEtcObject);

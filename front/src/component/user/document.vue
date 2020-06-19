@@ -6,11 +6,15 @@
         <div v-if="error">
             {{ error }}
         </div>
-        <div v-if="user">
-            <div v-for="item in toast">
-                <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
+        <div v-if="user" class="user">
+            <div class="toastContents">
+                <div v-for="item in toast">
+                    <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
+                </div>
             </div>
-            {{  }}
+            <div class="userContents">
+                {{ user.ogName }}
+            </div>
         </div>
     </div>
 </template>
@@ -63,6 +67,5 @@ export default {
 </script>
 
 <style>
-
 
 </style>

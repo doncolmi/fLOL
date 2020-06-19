@@ -26,7 +26,7 @@ export default {
     data : function() {
         return {
             show : true,
-            style : `background-image:url('../../src${this.sendData.img}'); background-repeat:no-repeat; background-position: 97% 65%; background-size: 9%`
+            style : `background-image:url('../../src${this.sendData.img}'); background-repeat:no-repeat; background-position: 97% 65%; background-size: 7%`
         }
     },
     methods: {
@@ -55,7 +55,7 @@ export default {
 .topToast{
     text-align: right;
     padding:0% 1%;
-    border-radius: 20px 20px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 .redToast .topToast {
     background-color:#eb3b5a;
@@ -72,7 +72,6 @@ export default {
 
 .closeBtn {
     color:white;
-    font-size:1.5em;
     cursor:pointer;
 }
 .closeBtn:hover {
@@ -80,9 +79,6 @@ export default {
     transition:0.5s;
 }
 
-.toastBridge {
-    height:5px;
-}
 .redToast .toastBridge {
     border-left: 2px solid #eb3b5a;
     border-right: 2px solid #eb3b5a;
@@ -101,13 +97,9 @@ export default {
 }
 
 .toastContents{
-    padding: 0.5% 1% 2% 1%;
-    border-radius: 0px 0px 20px 20px;
+    padding: 0.5% 0%;
+    border-radius: 0px 0px 10px 10px;
     font-family: 'Noto Sans KR', sans-serif;
-    background-image:url(`../../src${this.sendData.img}`); 
-    background-repeat:no-repeat; 
-    background-position: 97% 65%;
-     background-size: 9%;
 }
 
 .redToast .toastContents{
@@ -128,13 +120,16 @@ export default {
 }
 
 .toastTitle {
-    font-family: 'Black Han Sans';
-    font-size:2.5em;
-    text-align:center;
-    margin-bottom:1%;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size:1.2em;
+    text-align:left;
+    margin-left: 1%;
+    font-weight: bold;
 }
 
 .toastContent{
-    font-size:1.1em;
+    font-size:0.8em;
+    margin-left: 1%;
+    text-align:left;
 }
 </style>
