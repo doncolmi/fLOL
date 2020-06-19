@@ -49,7 +49,7 @@ export default {
     margin-bottom:0.5%;
 }
 .toast {
-    width:70%;
+    width:100%;
     margin:0 auto;
 }
 .topToast{

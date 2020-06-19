@@ -7,13 +7,13 @@
             {{ error }}
         </div>
         <div v-if="user" class="user">
-            <div class="toastContents">
-                <div v-for="item in toast">
+            <div>
+                <div class="documentTop">
+                    <div class="userName"> {{ user.ogName }} </div>
+                </div>
+                <div v-for="item in toast" v-bind:key="item">
                     <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
                 </div>
-            </div>
-            <div class="userContents">
-                {{ user.ogName }}
             </div>
         </div>
     </div>
@@ -67,5 +67,18 @@ export default {
 </script>
 
 <style>
+.user {
+    width: 70%;
+    margin:0 auto;
+}
+
+.documentTop {
+    text-align: left;
+}
+
+.documentTop .userName {
+    font-size: 2em;
+    font-family: 'Noto Sans KR', sans-serif;
+}
 
 </style>
