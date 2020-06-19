@@ -252,13 +252,13 @@ const setUserEtc = async(object) => {
     etc.push('jungle');
   }
 
-  if(object.recentWinLose.substring(0,3) === 'WWW') {
-    etc.push('3WinningStreak');
+  if(object.recentWinLose === 'WWWWW') {
+    etc.push('5WinningStreak');
   } else if(object.recentWinLose.substring(0,4) === 'WWWW'){
     etc.push('4WinningStreak');
-  } else if(object.recentWinLose === 'WWWWW') {
-    etc.push('5WinningStreak');
-  }
+  } else if(object.recentWinLose.substring(0,3) === 'WWW') {
+    etc.push('3WinningStreak');
+  } 
 
   object.etc = etc;
   console.log(etc);
