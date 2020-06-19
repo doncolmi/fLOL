@@ -35,6 +35,7 @@ describe('groupTest', async function () {
     log(group);
     assert.isObject(group);
   });
+  f;
 
   it('addAndRemoveMember', async function () {
     this.timeout(15000);
