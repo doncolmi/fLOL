@@ -5,7 +5,7 @@
     <div v-if="user" class="user">
       <div>
         <top :send-data="user"></top>
-        <div v-for="item in toast" v-bind:key="item">
+        <div v-for="(item, i) in toast" v-bind:key="i">
           <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
         </div>
       </div>
@@ -45,6 +45,7 @@ export default {
         .get(`http://localhost:15000/user/${this.$route.params.ogName}`)
         .then(async ({ data }) => {
           const toastList = [];
+          console.log(data);
           for (const item of data.etc) {
             const toasts = await axios.get(
               `http://localhost:15000/toast/${item}`

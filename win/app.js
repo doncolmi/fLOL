@@ -5,10 +5,10 @@ const logger = require('morgan');
 const cor = require('cors');
 const dotenv = require('dotenv');
 const mongo = require('./bin/mongoose');
-const toast = require('./model/data/toastData');
+const toast = require('./src/model/data/toastData');
 
-const indexRouter = require('./controller/index');
-const userRouter = require('./controller/user');
+const indexRouter = require('./src/controller/index');
+const userRouter = require('./src/controller/user');
 
 const app = express();
 
