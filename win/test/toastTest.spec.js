@@ -5,11 +5,11 @@ const assert = chai.assert;
 const should = chai.should();
 const axios = require('axios');
 
-const test = require('../service/toastService');
+const test = require('../src/service/toastService');
 const mongo = require('mongoose');
 require('dotenv').config();
 
-const toastSchema = require('../model/toastSchema');
+const toastSchema = require('../src/model/schema/toastSchema');
 
 describe('toastTest', async function () {
   before(() => {

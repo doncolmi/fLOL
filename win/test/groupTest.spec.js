@@ -5,12 +5,12 @@ const assert = chai.assert;
 const should = chai.should();
 const axios = require('axios');
 
-const test = require('../service/groupService');
-const userTest = require('../service/userService');
+const test = require('../src/service/groupService');
+const userTest = require('../src/service/userService');
 const mongo = require('mongoose');
 require('dotenv').config();
 
-const groupSchema = require('../model/groupSchema');
+const groupSchema = require('../src/model/schema/groupSchema');
 
 const testGroup = {
   name: 'Hello',
@@ -35,7 +35,6 @@ describe('groupTest', async function () {
     log(group);
     assert.isObject(group);
   });
-  f;
 
   it('addAndRemoveMember', async function () {
     this.timeout(15000);

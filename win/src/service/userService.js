@@ -1,9 +1,11 @@
 const axios = require('axios');
-const userSchema = require('../model/userSchema');
+const userSchema = require('../model/schema/userSchema');
 const lolData = require('../model/data/lolData');
+const { set } = require('mongoose');
 
 const log = console.log;
 
+// util start
 // getMaxKey
 const getMax = (list) => {
   const listSet = new Set([...list]);
@@ -37,27 +39,8 @@ const Config = () => {
     headers: Headers,
   };
 };
+// util end
 
-// get User name, eId, EAccountID, level
-const getUserId = async (name) => {
-  try {
-    const getUserIdAPI =
-      `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/` +
-      encodeURI(name);
-
-    const { data } = await axios.get(getUserIdAPI, Config());
-
-    return {
-      ogName: data.name,
-      name: name,
-      encryptedId: data.id,
-      encryptedAccountId: data.accountId,
-      level: data.summonerLevel,
-    };
-  } catch (e) {
-    return { ERROR: 'NOTFOUND' };
-  }
-};
 
 // check user's modifiedDate over 3 minutes
 const checkModifiedDate = async (modifiedDate) => {
@@ -85,36 +68,6 @@ const cntIdByAccountId = async (accountId) => {
   } catch (error) {
     throw new Error(error);
   }
-};
-
-const getUserLeagueInfo = async (encryptedId) => {
-  // getLeagueInfo
-  const getUserLeagueAPI = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedId}`;
-  let { data } = await axios.get(getUserLeagueAPI, Config());
-  if (data[0]) {
-    data = data[0];
-  } else {
-    log('언랭으로추가');
-    return {
-      rankTier: `UNRANK`,
-      rankScore: 0,
-      battleScore: 0,
-      win: 0,
-      lose: 0,
-    };
-  }
-
-  // return League Info
-  return {
-    rankTier: `${data.tier} ${data.rank}`,
-    rankScore: `${data.leaguePoints}`,
-    battleScore: lolData.getBattleScore(
-      `${data.tier} ${data.rank}`,
-      data.leaguePoints
-    ),
-    win: data.wins,
-    lose: data.losses,
-  };
 };
 
 const getMatchObject = (matchData) => {
@@ -168,6 +121,58 @@ const getRecentWinLose = async (gameIds, name) => {
   return recentWinLose;
 };
 
+
+// get User name, eId, EAccountID, level
+const getUserId = async (name) => {
+  try {
+    const getUserIdAPI =
+      `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/` +
+      encodeURI(name);
+
+    const { data } = await axios.get(getUserIdAPI, Config());
+
+    return {
+      ogName: data.name,
+      name: name,
+      encryptedId: data.id,
+      encryptedAccountId: data.accountId,
+      level: data.summonerLevel,
+    };
+  } catch (e) {
+    return { ERROR: 'NOTFOUND' };
+  }
+};
+
+const getUserLeagueInfo = async (encryptedId) => {
+  // getLeagueInfo
+  const getUserLeagueAPI = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedId}`;
+  let { data } = await axios.get(getUserLeagueAPI, Config());
+  if (data[0]) {
+    data = data[0];
+  } else {
+    log('언랭으로추가');
+    return {
+      rankTier: `UNRANK`,
+      rankScore: 0,
+      battleScore: 0,
+      win: 0,
+      lose: 0,
+    };
+  }
+
+  // return League Info
+  return {
+    rankTier: `${data.tier} ${data.rank}`,
+    rankScore: `${data.leaguePoints}`,
+    battleScore: lolData.getBattleScore(
+      `${data.tier} ${data.rank}`,
+      data.leaguePoints
+    ),
+    win: data.wins,
+    lose: data.losses,
+  };
+};
+
 const getUserMatchInfo = async (encryptedAccountId, name) => {
   const getUserMatchAPI = `https://kr.api.riotgames.com/lol/match/v4/matchlists/by-account/${encryptedAccountId}?endIndex=30&beginIndex=0`;
   let match;
@@ -210,97 +215,6 @@ const getUserMatchInfo = async (encryptedAccountId, name) => {
   };
 };
 
-const setUserEtc = async (object) => {
-  const etc = [];
-  if (
-    object.recentMatch === 'UNRANK' &&
-    object.recentLane === 'UNRANK' &&
-    object.recentChampion === 'UNRANK' &&
-    object.recentWinLose === '' &&
-    object.rankTier === 'UNRANK' &&
-    object.win === 0 &&
-    object.lose === 0
-  ) {
-    etc.push('ghost');
-  } else if (object.rankTier === 'UNRANK') {
-    etc.push('unrank');
-  }
-
-  if (object.rankTier.includes('IRON') || object.rankTier.includes('BRONZE')) {
-    etc.push('simhae');
-  } else if (
-    object.rankTier.includes('SILVER') ||
-    object.rankTier.includes('GOLD')
-  ) {
-    etc.push('silverGold');
-  } else if (object.rankTier.includes('PLATINUM')) {
-    etc.push('platinum');
-  } else if (object.rankTier.includes('DIAMOND')) {
-    etc.push('diamond');
-  } else if (
-    object.rankTier.includes('MATSER') &&
-    !object.rankTier.includes('GRANDMASTER')
-  ) {
-    etc.push('master');
-  } else if (object.rankTier.includes('GRANDMASTER')) {
-    etc.push('grandMaster');
-  } else if (object.rankTier.includes('CHALLENGER')) {
-    etc.push('challenger');
-  }
-
-  if (object.recentLane === 'MID') {
-    etc.push('mid');
-  } else if (object.recentLane === 'TOP') {
-    etc.push('top');
-  } else if (object.recentLane === 'BOT') {
-    etc.push('ad');
-  } else if (object.recentLane === 'SUPPORT') {
-    etc.push('sup');
-  } else if (object.recentLane === 'JUNGLE') {
-    etc.push('jungle');
-  }
-
-  if (object.recentWinLose === 'WWWWW') {
-    etc.push('5WinningStreak');
-  } else if (object.recentWinLose.substring(0, 4) === 'WWWW') {
-    etc.push('4WinningStreak');
-  } else if (object.recentWinLose.substring(0, 3) === 'WWW') {
-    etc.push('3WinningStreak');
-  }
-
-  if (object.level > 29 && object.level < 50) {
-    etc.push('levelFifty');
-  } else if (object.level >= 50 && object.level < 150) {
-    etc.push('levelOnehundred');
-  } else if (object.level >= 150 && object.level < 250) {
-    etc.push('levelOnehundredFifty');
-  } else if (object.level >= 250 && object.level < 300) {
-    etc.push('levelTwohundredFifty');
-  } else if (object.level >= 300 && object.level < 500) {
-    etc.push('levelThreehundred');
-  } else if (object.level >= 500 && object.level < 1000) {
-    etc.push('levelFivehundred');
-  } else if (object.level >= 1000 && object.level < 5000) {
-    etc.push('levelOneK');
-  }
-
-  if (object.recentMatch === '솔랭') {
-    etc.push('soloRank');
-  } else if (object.recentMatch === '일겜') {
-    etc.push('defalut');
-  } else if (object.recentMatch === '자랭') {
-    etc.push('freeRank');
-  } else if (object.recentMatch === '칼바람') {
-    etc.push('swordWind');
-  } else if (object.recentMatch !== 'UNRANK' && object.recentMatch) {
-    etc.push('freeRank');
-  }
-
-  object.etc = etc;
-  console.log(etc);
-  return object;
-};
-
 const saveUserDB = async (info) => {
   const leagueInfo = await getUserLeagueInfo(info.encryptedId);
   let matchInfo;
@@ -316,7 +230,7 @@ const saveUserDB = async (info) => {
   }
 
   const userDataObject = Object.assign(info, leagueInfo, matchInfo);
-  const userDataEtcObject = await setUserEtc(userDataObject);
+  const userDataEtcObject = await lolData.setEtc(userDataObject);
   const user = new userSchema(userDataEtcObject);
 
   await user.save();
@@ -360,9 +274,8 @@ module.exports.updateUser = async (accountId) => {
 };
 
 const updateUserDB = async (accountId) => {
-  let user;
   try {
-    user = await getUserDB(accountId);
+    const user = await getUserDB(accountId);
     const userIdInfo = await getUserId(user.name);
 
     const leagueInfo = await getUserLeagueInfo(user.encryptedId);
@@ -382,15 +295,12 @@ const updateUserDB = async (accountId) => {
       user[item] = matchInfo[item];
     }
     user.modifiedDate = Date.now();
-    user.etc = await setUserEtc(user);
-  } catch (e) {
-    console.error(e);
-  }
+    user.etc = await lolData.setEtc(user);
 
-  try {
     await user.save();
     return true;
   } catch (e) {
+    console.error(e);
     return false;
   }
 };

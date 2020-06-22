@@ -1,5 +1,5 @@
 const axios = require('axios');
-const groupSchema = require('../model/groupSchema');
+const groupSchema = require('../model/schema/groupSchema');
 
 const crypto = require('crypto');
 const log = console.log;

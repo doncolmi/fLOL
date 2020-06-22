@@ -1,4 +1,4 @@
-const toastSchema = require('../toastSchema');
+const toastSchema = require('../schema/toastSchema');
 
 const toastData = [
   {

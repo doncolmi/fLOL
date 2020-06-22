@@ -50,6 +50,97 @@ module.exports.getQueue = (queue) => {
     return '기타게임';
   };
 
+module.exports.setEtc = async (object) => {
+  const etc = [];
+  if (
+    object.recentMatch === 'UNRANK' &&
+    object.recentLane === 'UNRANK' &&
+    object.recentChampion === 'UNRANK' &&
+    object.recentWinLose === '' &&
+    object.rankTier === 'UNRANK' &&
+    object.win === 0 &&
+    object.lose === 0
+  ) {
+    etc.push('ghost');
+  } else if (object.rankTier === 'UNRANK') {
+    etc.push('unrank');
+  }
+
+  if (object.rankTier.includes('IRON') || object.rankTier.includes('BRONZE')) {
+    etc.push('simhae');
+  } else if (
+    object.rankTier.includes('SILVER') ||
+    object.rankTier.includes('GOLD')
+  ) {
+    etc.push('silverGold');
+  } else if (object.rankTier.includes('PLATINUM')) {
+    etc.push('platinum');
+  } else if (object.rankTier.includes('DIAMOND')) {
+    etc.push('diamond');
+  } else if (
+    object.rankTier.includes('MATSER') &&
+    !object.rankTier.includes('GRANDMASTER')
+  ) {
+    etc.push('master');
+  } else if (object.rankTier.includes('GRANDMASTER')) {
+    etc.push('grandMaster');
+  } else if (object.rankTier.includes('CHALLENGER')) {
+    etc.push('challenger');
+  }
+
+  if (object.recentLane === 'MID') {
+    etc.push('mid');
+  } else if (object.recentLane === 'TOP') {
+    etc.push('top');
+  } else if (object.recentLane === 'BOT') {
+    etc.push('ad');
+  } else if (object.recentLane === 'SUPPORT') {
+    etc.push('sup');
+  } else if (object.recentLane === 'JUNGLE') {
+    etc.push('jungle');
+  }
+
+  if (object.recentWinLose === 'WWWWW') {
+    etc.push('5WinningStreak');
+  } else if (object.recentWinLose.substring(0, 4) === 'WWWW') {
+    etc.push('4WinningStreak');
+  } else if (object.recentWinLose.substring(0, 3) === 'WWW') {
+    etc.push('3WinningStreak');
+  }
+
+  if (object.level > 29 && object.level < 50) {
+    etc.push('levelFifty');
+  } else if (object.level >= 50 && object.level < 150) {
+    etc.push('levelOnehundred');
+  } else if (object.level >= 150 && object.level < 250) {
+    etc.push('levelOnehundredFifty');
+  } else if (object.level >= 250 && object.level < 300) {
+    etc.push('levelTwohundredFifty');
+  } else if (object.level >= 300 && object.level < 500) {
+    etc.push('levelThreehundred');
+  } else if (object.level >= 500 && object.level < 1000) {
+    etc.push('levelFivehundred');
+  } else if (object.level >= 1000 && object.level < 5000) {
+    etc.push('levelOneK');
+  }
+
+  if (object.recentMatch === '솔랭') {
+    etc.push('soloRank');
+  } else if (object.recentMatch === '일겜') {
+    etc.push('defalut');
+  } else if (object.recentMatch === '자랭') {
+    etc.push('freeRank');
+  } else if (object.recentMatch === '칼바람') {
+    etc.push('swordWind');
+  } else if (object.recentMatch !== 'UNRANK' && object.recentMatch) {
+    etc.push('freeRank');
+  }
+
+  object.etc = etc;
+  console.log(etc);
+  return object;
+};
+
 module.exports.champions = {
   '266': '아트록스',
   '103': '아리',
