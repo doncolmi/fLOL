@@ -42,13 +42,13 @@ export default {
       this.error = this.post = null;
       this.loading = true;
       axios
-        .get(`http://localhost:15000/user/${this.$route.params.ogName}`)
+        .get(`${VUE_APP_LOCAL_URI}/user/${this.$route.params.ogName}`)
         .then(async ({ data }) => {
           const toastList = [];
           console.log(data);
           for (const item of data.etc) {
             const toasts = await axios.get(
-              `http://localhost:15000/toast/${item}`
+              `${VUE_APP_LOCAL_URI}/toast/${item}`
             );
             toastList.push(toasts.data);
           }
