@@ -7,7 +7,12 @@
 
 <script>
 import top from './component/Top.vue';
+import aos from 'aos';
+
 export default {
+  created() {
+    aos.init();
+  },
   components: {
     'top' : top,
   },
@@ -16,12 +21,16 @@ export default {
 </script>
 
 <style>
+body{
+  margin:0;
+  background-color: #EFFFE9;
+}
+top {
+  margin-bottom: 1%;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 
 </style>

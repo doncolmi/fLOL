@@ -1,5 +1,6 @@
 <template>
   <div>
+    <search></search>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
     <div v-if="user" class="user">
@@ -17,11 +18,13 @@
 import toast from "./toast";
 import axios from "axios";
 import top from "./document/top";
+import search from "../search/SearchBar"
 
 export default {
   components: {
     toast: toast,
-    top: top
+    top: top,
+    search: search,
   },
   data() {
     return {
@@ -39,7 +42,7 @@ export default {
   },
   methods: {
     getUserData() {
-      this.error = this.post = null;
+      this.error = this.post = this.user = this.toast = null;
       this.loading = true;
       axios
         .get(`${VUE_APP_LOCAL_URI}/user/${this.$route.params.ogName}`)
