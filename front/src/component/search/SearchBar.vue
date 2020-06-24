@@ -1,6 +1,12 @@
 <template>
   <div class="inputBox shadow">
-    <input type="text" id="inputForm" v-on:keyup.enter="searchUser()" placeholder="유저 이름을 검색해주세요" autocomplete="off" />
+    <input
+      type="text"
+      id="inputForm"
+      v-on:keyup.enter="searchUser()"
+      placeholder="유저 이름을 검색해주세요"
+      autocomplete="off"
+    />
     <span @click="searchUser()" class="addContainer">
       <i class="addBtn fas fa-search" aria-hidden="true"></i>
     </span>
@@ -30,10 +36,10 @@ export default {
   line-height: 70px;
   margin: 0 auto;
   border-radius: 20px 20px 20px 20px;
-  text-align:center;
-  margin-top:2%;
+  text-align: center;
+  margin-top: 2%;
   margin-bottom: 2%;
-  border: 2px solid #EC7357;
+  border: 3px solid #ec7357;
 }
 .inputBox input {
   border-style: none;
@@ -47,14 +53,14 @@ export default {
 }
 .addContainer {
   float: right;
-  background: #EC7357;
+  background: #ec7357;
   display: inline-block;
   width: 5rem;
   cursor: pointer;
   border-radius: 0px 18px 18px 0px;
 }
 .addBtn {
-  color:white;
+  color: white;
   vertical-align: middle;
   font-size: 1.5em;
 }

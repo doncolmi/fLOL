@@ -6,24 +6,26 @@
 </template>
 
 <script>
-import top from './component/Top.vue';
-import aos from 'aos';
+import top from "./component/Top.vue";
+import aos from "aos";
 
 export default {
   created() {
     aos.init();
   },
   components: {
-    'top' : top,
-  },
-
-}
+    top: top
+  }
+};
 </script>
 
 <style>
-body{
-  margin:0;
-  background-color: #EFFFE9;
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap");
+
+body {
+  margin: 0;
+  background-color: #ffebee;
+  font-family: "Nanum Gothic", sans-serif;
 }
 top {
   margin-bottom: 1%;
@@ -32,5 +34,4 @@ top {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 </style>
