@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import search from './search/SearchBar';
-import find from './search/findGourp';
+import search from '../search/SearchBar';
+import find from '../search/findGourp';
 
 export default {
   components: {
@@ -33,14 +33,14 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 header {
-  background : url('../../src/assets/main/headerBg.png');
+  background : url('../../../src/assets/main/headerBg.png');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: inherit;
   width: 100%;
   display: flex;
   flex-direction: column;
   font-weight: 700;
-  padding: 2%;
+  padding: 2% 0%;
 }
 
 .headerShawdow{
@@ -78,7 +78,7 @@ header .headerMenu {
 }
 
 header .headerFont {
-  color: white;
+  color: #FFCDD2;
   font-size: 5em;
   font-family: "Lobster", cursive;
 
