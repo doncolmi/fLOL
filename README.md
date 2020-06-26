@@ -4,15 +4,25 @@
 
 롤 관련 그룹 생성 및 유저 추적
 
-### 프로젝트 정보
+Lang : JavaScript, Node.js
+Framework : Node.js Express, Vue
+ORM : Mongoose
+DB : MongoDB
+
+## 프로젝트 정보
+
+---
+
+### Nodejs Express 서버(/win)
 
 ---
 
 - **설치**
 
-    `.env`에서 환경변수 설정 후 `npm install`로 모듈 설치 `npm start`로 서버 실행
+    `/win/.env`에서 환경변수 설정 후 `npm install`로 모듈 설치 `npm start`로 서버 실행
 
-    - `/.env`
+    - `/win/.env`
+    (/win/.env.template 파일을 .env로 복사해 사용)
 
     ```
     # PORT
@@ -46,5 +56,25 @@
         PUT "/group/:name" - 그룹 수정
 
         DELETE "/group/:name - 그룹 삭제
+    - toast 관련
+        GET "/toast/:name - 토스트 데이터 조회
 
-        
+### Vue 서버(/front)
+
+---
+
+- **설치**
+
+    `/front/.env`에서 환경변수 설정 후 `npm install`로 모듈 설치 `npm run dev`로 서버 실행
+
+    - `/front/.env`
+    (/front/.env.template 파일을 .env로 복사해 사용)
+
+    ```
+    # Your Nodejs Express Server URI
+    VUE_APP_LOCAL_URI=위에서 Nodejs Express 서버 실행한 주소와 포트
+
+    ```
+
+- **API**
+

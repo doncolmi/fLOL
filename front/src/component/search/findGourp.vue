@@ -4,11 +4,11 @@
       type="text"
       id="inputForm"
       v-on:keyup.enter="searchUser()"
-      placeholder="유저 이름을 검색해주세요"
+      placeholder="그룹 코드를 입력해주세요."
       autocomplete="off"
     />
     <span @click="searchUser()" class="addContainer">
-      <i class="addBtn fas fa-search" aria-hidden="true"></i>
+      <i class="addBtn fas fa-play" aria-hidden="true"></i>
     </span>
   </div>
 </template>

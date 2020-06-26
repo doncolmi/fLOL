@@ -1,27 +1,20 @@
 <template>
   <div>
-    <search></search>
-    <div>
-        <searchItem></searchItem>
-        <groupItem></groupItem>
-    </div>
+    <top></top>
   </div>
 </template>
 
 <script>
-import search from "../search/SearchBar"
-import searchItem from "./SearchItem";
-import groupItem from "./GroupItem";
+import top from '../Top';
 
 export default {
-    components: {
-        search: search,
-        searchItem : searchItem,
-        groupItem : groupItem,
+  components: {
+        top: top,
     },
-}
+  name: "app",
+  methods: {}
+};
 </script>
 
 <style>
-
 </style>
