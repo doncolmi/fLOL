@@ -2,7 +2,7 @@
 
 ---
 
-롤 관련 그룹 생성 및 유저 추적
+롤 관련 그룹 생성 및 유저 조회
 
 Lang : JavaScript, Node.js
 Framework : Node.js Express, Vue
