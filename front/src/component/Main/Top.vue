@@ -64,6 +64,7 @@ header .mainContext {
 .descriptionContext{
   font-size: 1.3em;
   line-height: 1.5em;
+  font-weight: bold;
 }
 
 header .textCenter {
@@ -81,6 +82,5 @@ header .headerFont {
   color: #FFCDD2;
   font-size: 5em;
   font-family: "Lobster", cursive;
-
 }
 </style>
