@@ -48,7 +48,6 @@ export default {
         .get(`${VUE_APP_LOCAL_URI}/user/${this.$route.params.ogName}`)
         .then(async ({ data }) => {
           const toastList = [];
-          console.log(data);
           for (const item of data.etc) {
             const toasts = await axios.get(
               `${VUE_APP_LOCAL_URI}/toast/${item}`
@@ -72,5 +71,10 @@ export default {
 .user {
   width: 70%;
   margin: 0 auto;
+}
+@media ( max-width: 1025px ) {
+    .user {
+      width: 100%;
+    }
 }
 </style>

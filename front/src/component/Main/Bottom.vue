@@ -1,6 +1,8 @@
 <template>
   <div class="bottom">
     <BottomItem :send-data="makeGroup"></BottomItem>
+    <BottomItem :send-data="dontJoin"></BottomItem>
+    <BottomItem :send-data="star"></BottomItem>
   </div>
 </template>
 
@@ -36,6 +38,20 @@ export default {
 <style>
 .bottom {
   width: 100%;
+  display: flex;
+  padding: 5% 0%;
+  justify-content: center;
+}
+@media ( min-height: 1300px ) {
+  .bottom {
+    padding: 2% 0%;
+  }
+}
+
+@media ( max-width: 1025px ) {
+    .bottom{
+        display: none;
+    }
 }
 
 </style>

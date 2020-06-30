@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mainApp">
     <top></top>
     <div class="">
       <bottom></bottom>
@@ -22,4 +22,7 @@ export default {
 </script>
 
 <style>
+.mainApp{
+  height:100%;
+}
 </style>

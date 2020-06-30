@@ -132,4 +132,84 @@ export default {
     margin-left: 1%;
     text-align:left;
 }
+
+@media ( min-height: 1300px ) {
+  .topToast{
+        text-align: right;
+        padding:0% 1%;
+        border-radius: 10px 10px 0 0;
+    }
+    .closeBtn {
+        font-size: 1.5em;
+    }
+    .toast {
+        width:80%;
+    }
+    .toastTitle {
+        font-size:1.5em;
+    }
+    .toastContent{
+        font-size:1.2em;
+    }
+}
+@media ( max-width: 1025px ) {
+    .topToast{
+        text-align: right;
+        padding:0% 1%;
+        border-radius: 10px 10px 0 0;
+    }
+    .closeBtn {
+        font-size: 1.5em;
+    }
+    .toast {
+        width:100%;
+    }
+    .toastTitle {
+        font-size:1.3em;
+    }
+    .toastContent{
+        font-size:1.0em;
+    }
+}
+
+@media ( max-width: 1025px ) {
+    .topToast{
+        text-align: right;
+        padding:0% 1%;
+        border-radius: 10px 10px 0 0;
+    }
+    .closeBtn {
+        font-size: 1.5em;
+    }
+    .toast {
+        width:100%;
+    }
+    .toastTitle {
+        font-size:1.3em;
+    }
+    .toastContent{
+        font-size:1.0em;
+    }
+}
+
+@media ( max-width: 525px ) {
+    .topToast{
+        text-align: right;
+        padding:0% 1%;
+        border-radius: 10px 10px 0 0;
+    }
+    .closeBtn {
+        font-size: 1.3em;
+    }
+    .toast {
+        width:100%;
+    }
+    .toastTitle {
+        font-size:1em;
+    }
+    .toastContent{
+        font-size:0.7em;
+    }
+}
+
 </style>

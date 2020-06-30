@@ -63,4 +63,53 @@ export default {
   vertical-align: middle;
   font-size: 1.5em;
 }
+@media ( min-height: 1300px ) {
+  .inputBox {
+    width: 30%;
+    height: 100px;
+    line-height: 100px;
+    margin-top:2%;
+  }
+  .inputBox input {
+    font-size: 1.6rem;
+    height:90%;
+  }
+  .addBtn {
+    font-size:2em;
+  }
+}
+
+@media ( max-width: 1025px ) {
+  .inputBox {
+    width: 90%;
+    height: 100px;
+    line-height: 100px;
+    margin-top:5%;
+    margin-bottom:5%;
+  }
+  .inputBox input {
+    font-size: 1.5rem;
+    height:90%;
+  }
+  .addBtn {
+    font-size:2em;
+  }
+}
+
+@media ( max-width: 525px ) {
+  .inputBox {
+    width: 95%;
+    height: 60px;
+    line-height: 60px;
+    margin-top:5%;
+    margin-bottom:5%;
+  }
+  .inputBox input {
+    font-size: 1.1rem;
+    height:90%;
+  }
+  .addBtn {
+    font-size:2em;
+  }
+}
 </style>
