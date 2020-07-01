@@ -9,6 +9,9 @@ Framework : Node.js Express, Vue
 ORM : Mongoose
 DB : MongoDB
 
+반응형 적용되어 있습니다.
+스마트폰 , 패드 , 일반 컴퓨터(1920x1080), 큰 모니터(height 1300이상)
+
 ## 프로젝트 정보
 
 ---
