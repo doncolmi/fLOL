@@ -38,8 +38,8 @@ export default {
   text-align: justify;
   margin-top: 1%;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
   box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
 }
 .inputBox input {
   border-style: none;
