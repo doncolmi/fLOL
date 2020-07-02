@@ -38,8 +38,9 @@ export default {
 <style>
 .bottom {
   width: 100%;
+  height: 40%;
   display: flex;
-  padding: 5% 0%;
+  padding: 2% 0%;
   justify-content: center;
 }
 @media ( min-height: 1300px ) {

@@ -1,8 +1,15 @@
 <template>
   <header class="headerShawdow">
-    <router-link to="/" class="headerMenu textCenter headerFont">
-      F
-    </router-link>
+    <div style="margin-left: 2%;">
+      <router-link to="/" class="topMenu">유저 검색</router-link>
+      <router-link to="/" class="topMenu">그룹 검색</router-link>
+      <router-link to="/" class="topMenu">그룹 만들기</router-link>
+    </div>
+    <div class="headerMenu">
+      <router-link to="/" class="textCenter headerFont">
+        F
+      </router-link>
+    </div>
     <div class="mainContext">
       <p class="titleContext">Flol은 전적 검색 사이트가 아닙니다.<br>
         <a>FLoL is not a match search site.</a>
@@ -46,15 +53,24 @@ export default {
     height:100%;
   }
 
+  .topMenu {
+    font-weight:normal; 
+    font-size: 0.9em; 
+    color:white; 
+    margin-right:1%;
+    text-decoration: none;
+    cursor:pointer;
+  }
   header {
     background : url('../../../src/assets/main/headerBg.png');
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
+    height: 60%;
     display: flex;
     flex-direction: column;
     font-weight: 700;
-    padding: 2% 0%;
+    padding: 1% 0%;
   }
 
   .headerShawdow{
@@ -118,6 +134,7 @@ export default {
   @media ( min-height: 1300px ) {
     header {
       padding: 3% 0%;
+      height:70%;
     }
     .headerShawdow{
       -webkit-box-shadow: 0px 5px 15px 0px rgba(168, 168, 168, 1);
