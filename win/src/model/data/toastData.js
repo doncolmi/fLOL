@@ -221,7 +221,7 @@ const toastData = [
     class: 'blackToast',
   },
   {
-    name: 'freeRank',
+    name: 'urf',
     title: '이 유저는 특별게임모드 유저입니다.',
     content: '이 문서의 주인 [name]님은 특별게임모드를 즐겨합니다.',
     img: '/assets/toast/urf.png',
