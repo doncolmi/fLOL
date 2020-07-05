@@ -1,7 +1,7 @@
 <template>
   <header class="headerShawdow">
     <div style="margin-left: 2%;">
-      <router-link to="/" class="topMenu">유저 검색</router-link>
+      <router-link to="/search" class="topMenu">유저 검색</router-link>
       <router-link to="/" class="topMenu">그룹 검색</router-link>
       <router-link to="/" class="topMenu">그룹 만들기</router-link>
     </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import search from '../search/SearchBar';
+import search from '../search/bar/SearchBar';
 import find from '../search/findGourp';
 
 export default {

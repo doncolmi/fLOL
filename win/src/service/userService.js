@@ -41,7 +41,6 @@ const Config = () => {
 };
 // util end
 
-
 // check user's modifiedDate over 3 minutes
 const checkModifiedDate = async (modifiedDate) => {
   const elapsed = (Date.now() - modifiedDate.getTime()) / 1000;
@@ -120,7 +119,6 @@ const getRecentWinLose = async (gameIds, name) => {
 
   return recentWinLose;
 };
-
 
 // get User name, eId, EAccountID, level
 const getUserId = async (name) => {

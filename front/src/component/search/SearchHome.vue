@@ -1,13 +1,16 @@
 <template>
-  <div>
-    
-  </div>
+    <div>
+        <SearchHomeBar></SearchHomeBar>
+    </div>
 </template>
 
 <script>
-export default {
-  
-};
+import SearchHomeBar from "./bar/SearchBarHome"
+    export default {
+        components : {
+            SearchHomeBar : SearchHomeBar,
+        }
+    }
 </script>
 
 <style>
