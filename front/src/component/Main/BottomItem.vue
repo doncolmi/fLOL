@@ -18,7 +18,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .bottomItem {
   width:33%;
   text-align: center;

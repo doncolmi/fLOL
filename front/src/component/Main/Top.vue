@@ -1,9 +1,7 @@
 <template>
   <header class="headerShawdow">
     <div style="margin-left: 2%;">
-      <router-link to="/search" class="topMenu">유저 검색</router-link>
-      <router-link to="/" class="topMenu">그룹 검색</router-link>
-      <router-link to="/" class="topMenu">그룹 만들기</router-link>
+      <topMenu></topMenu>
     </div>
     <div class="headerMenu">
       <router-link to="/" class="textCenter headerFont">
@@ -31,11 +29,13 @@
 <script>
 import search from '../search/bar/SearchBar';
 import find from '../search/findGourp';
+import topMenu from './TextMenu';
 
 export default {
   components: {
         search: search,
         find: find,
+        topMenu: topMenu,
     },
   name: "app",
   methods: {}
@@ -53,14 +53,6 @@ export default {
     height:100%;
   }
 
-  .topMenu {
-    font-weight:normal; 
-    font-size: 0.9em; 
-    color:white; 
-    margin-right:1%;
-    text-decoration: none;
-    cursor:pointer;
-  }
   header {
     background : url('../../../src/assets/main/headerBg.png');
     background-repeat: no-repeat;

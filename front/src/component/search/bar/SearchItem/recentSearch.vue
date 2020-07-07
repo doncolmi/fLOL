@@ -1,7 +1,7 @@
 <template>
-    <div class="wrapper">
-        <div v-if="" class="profile" :style="style">
-        </div>
+    <div @click="searchUser()" class="wrapper recentSearchItem">
+        <div v-if="champion" class="profile" :style="style"></div>
+        <div v-if="!champion" class="noImg">?</div>
         <div class="playerInfo">
             <div class="name" >
                 {{ this.sendData.ogName}}
@@ -21,9 +21,23 @@
 <script>
     export default {
         props: ['sendData'],
+        created() {
+            this.isChampion();
+        },
         data : function() {
             return {
+                champion : false,
                 style : `background-image: url('http://ddragon.leagueoflegends.com/cdn/10.13.1/img/champion/${this.sendData.recentChampion}.png'); background-size: contain;background-repeat:no-repeat; `
+            }
+        },
+        methods: {
+            searchUser() {
+                this.$router.push({ path: `/user/${this.sendData.ogName}` });
+            },
+            isChampion() {
+                if(this.sendData.recentChampion != "UNRANK") {
+                    this.champion = true;
+                }
             }
         }
     }
@@ -40,6 +54,17 @@
     .profile {
         width:12%;
         box-shadow: 0px 0px 5px 0px lightgray;   
+    }
+    .noImg {
+        width: 12%;
+        box-shadow: 0px 0px 5px 0px lightgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background-color: gray;
+        font-size: 2em;
+        font-weight: bold;
     }
     .itemCenter {
         display: flex;
@@ -74,7 +99,7 @@
         color:lightgray;
     }
 
-    .wrapper:hover .playerInfo, .wrapper:hover .go {
+    .recentSearchItem:hover .playerInfo, .recentSearchItem:hover .go {
         background-color: rgba(0,0,0,0.05);
     }
 </style>

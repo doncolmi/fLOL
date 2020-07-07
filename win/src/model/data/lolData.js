@@ -134,7 +134,6 @@ module.exports.setEtc = async (object) => {
   }
 
   object.etc = etc;
-  console.log(etc);
   return object;
 };
 

@@ -1,14 +1,20 @@
 <template>
     <div class="bannerWrapper bannerBg">
-        <div class="bannerHomeBtn bannerHomeShadow">
-            <router-link to="/" class="bannerHomeFont">F</router-link>
+        <div style="position:absolute;top:0;left:0;padding:1.5%;width:30%;">
+            <topMenu></topMenu>
         </div>
+        <router-link to="/" tags="div" class="bannerHomeBtn bannerHomeShadow">
+            <a to="/" class="bannerHomeFont">F</a>
+        </router-link>
     </div>
 </template>
 
 <script>
+    import topMenu from './Main/TextMenu';
     export default {
-        
+        components: {
+            topMenu : topMenu,
+        }   
     }
 </script>
 

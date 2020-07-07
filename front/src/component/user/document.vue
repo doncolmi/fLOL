@@ -36,8 +36,40 @@ export default {
   },
   async created() {
     await this.getUserData();
-
     if(this.user) {
+      if(!(await this.isTodayFirstUser())) {
+        this.saveTodayFirstUser();
+      } 
+      this.saveRecentSearch();
+    }
+  },
+  watch: {
+    $route: "getUserData"
+  },
+  methods: {
+    async getUserData() {
+      this.error = this.post = this.user = this.toast = null;
+      this.loading = true;
+      await axios
+        .get(`${VUE_APP_LOCAL_URI}/user/${this.$route.params.ogName}`)
+        .then(async ({ data }) => {
+          const toastList = [];
+          for (const item of data.etc) {
+            const toasts = await axios.get(
+              `${VUE_APP_LOCAL_URI}/toast/${item}`
+            );
+            toastList.push(toasts.data);
+          }
+          this.loading = false;
+          this.toast = toastList;
+          this.user = data;
+        })
+        .catch(err => {
+          this.loading = false;
+          this.error = err.toString();
+        });
+    },
+    saveRecentSearch() {
       const item = [this.user.name,
         {
           ogName : this.user.ogName, 
@@ -69,34 +101,30 @@ export default {
         array.push(item);
         localStorage.setItem("recentSearch", JSON.stringify(array));
       }
+    },
+    async isTodayFirstUser() {
+      const today = new Date();
+      const todayString = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+      const isTodayFirstUser = await axios.get(`${VUE_APP_LOCAL_URI}/today/${todayString}`);
+      return isTodayFirstUser.data;
+    },
+    saveTodayFirstUser() {
+      const today = new Date();
+      const todayString = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+      
+      const data = {
+        ogName : this.user.ogName,
+        level : this.user.level,
+        rankTier : this.user.rankTier,
+        recentChampion : this.user.recentChampion,
+        date : todayString,
+      };
 
-    }
-  },
-  watch: {
-    $route: "getUserData"
-  },
-  methods: {
-    async getUserData() {
-      this.error = this.post = this.user = this.toast = null;
-      this.loading = true;
-      await axios
-        .get(`${VUE_APP_LOCAL_URI}/user/${this.$route.params.ogName}`)
-        .then(async ({ data }) => {
-          const toastList = [];
-          for (const item of data.etc) {
-            const toasts = await axios.get(
-              `${VUE_APP_LOCAL_URI}/toast/${item}`
-            );
-            toastList.push(toasts.data);
-          }
-          this.loading = false;
-          this.toast = toastList;
-          this.user = data;
+      axios.post(`${VUE_APP_LOCAL_URI}/today`, data)
+        .then(({data}) => {
+          let text;
+          data ? text = "성공" : text = "실패"
         })
-        .catch(err => {
-          this.loading = false;
-          this.error = err.toString();
-        });
     }
   }
 };

@@ -11,7 +11,6 @@ import SearchBar from "./bar/SearchBar";
 export default {
   components : {
     TopBanner : TopBanner,
-    SearchBar : SearchBar,
   }
 };
 </script>

@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import main from "../component/Main/Main";
 import document from "../component/user/document";
 import search from "../component/search/Search";
-import searchHome from "../component/search/SearchHome";
+import searchHome from "../component/search/searchHome/SearchHome";
 
 Vue.use(VueRouter);
 

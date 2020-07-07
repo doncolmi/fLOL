@@ -43,7 +43,6 @@ export default {
         const todo = this.todoItems;
         if(localStorage.length > 0) {
             Object.keys(localStorage).forEach(function(key) {
-                console.log(localStorage.getItem(key));
                 todo.push(localStorage.getItem(key));
             });
         }
