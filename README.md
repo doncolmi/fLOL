@@ -81,4 +81,7 @@ DB : MongoDB
 
 - **API**
 
+
+    `/user` - user 조회
+    `/search` - search 메인
  Bottom Item Add
