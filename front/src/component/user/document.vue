@@ -1,11 +1,13 @@
 <template>
   <div>
+    <TopBanner></TopBanner>
     <search></search>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
     <div v-if="user" class="user">
       <div>
         <top :send-data="user"></top>
+        <main :send-data="user"></main>
         <div v-for="(item, i) in toast" v-bind:key="i">
           <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
         </div>
@@ -15,15 +17,19 @@
 </template>
 
 <script>
+import TopBanner from '../TopBanner';
 import toast from "./toast";
 import axios from "axios";
 import top from "./document/top";
+import main from "./document/main";
 import search from "../search/bar/SearchBar"
 
 export default {
   components: {
+    TopBanner: TopBanner,
     toast: toast,
     top: top,
+    main : main,
     search: search,
   },
   data() {

@@ -31,7 +31,6 @@ module.exports.isTodayFirstUser = async (today) => {
 
 module.exports.saveTodayFirstUser = async (data) => {
   try {
-    console.log(data);
     const item = {
       ogName: data.ogName,
       level: data.level,
