@@ -84,4 +84,5 @@ DB : MongoDB
 
     `/user` - user 조회
     `/search` - search 메인
+    `/group` - group 메인
  Bottom Item Add
