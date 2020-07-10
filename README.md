@@ -82,7 +82,7 @@ DB : MongoDB
 - **API**
 
 
-    `/user` - user 조회
+    `/user/:name` - user 조회
     `/search` - search 메인
-    `/group` - group 메인
+    `/group` - group
  Bottom Item Add
