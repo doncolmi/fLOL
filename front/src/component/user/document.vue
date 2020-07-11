@@ -2,12 +2,17 @@
   <div>
     <TopBanner></TopBanner>
     <search></search>
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading">
+      <div class="load">
+        <img src="../../../src/assets/827.svg" />
+        <a>Loading...</a>
+      </div>
+    </div>
     <div v-if="error">{{ error }}</div>
     <div v-if="user" class="user">
       <div>
         <top :send-data="user"></top>
-        <main :send-data="user"></main>
+        <mainContent :send-data="user"></mainContent>
         <div v-for="(item, i) in toast" v-bind:key="i">
           <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
         </div>
@@ -17,20 +22,20 @@
 </template>
 
 <script>
-import TopBanner from '../TopBanner';
+import TopBanner from "../TopBanner";
 import toast from "./toast";
 import axios from "axios";
 import top from "./document/top";
-import main from "./document/main";
-import search from "../search/bar/SearchBar"
+import mainContent from "./document/main";
+import search from "../search/bar/SearchBar";
 
 export default {
   components: {
     TopBanner: TopBanner,
     toast: toast,
     top: top,
-    main : main,
-    search: search,
+    mainContent: mainContent,
+    search: search
   },
   data() {
     return {
@@ -42,10 +47,10 @@ export default {
   },
   async created() {
     await this.getUserData();
-    if(this.user) {
-      if(!(await this.isTodayFirstUser())) {
+    if (this.user) {
+      if (!(await this.isTodayFirstUser())) {
         this.saveTodayFirstUser();
-      } 
+      }
       this.saveRecentSearch();
     }
   },
@@ -76,32 +81,34 @@ export default {
         });
     },
     saveRecentSearch() {
-      const item = [this.user.name,
+      const item = [
+        this.user.name,
         {
-          ogName : this.user.ogName, 
-          rankTier : this.user.rankTier,
-          level : this.user.level, 
-          recentChampion : this.user.recentChampion
+          ogName: this.user.ogName,
+          rankTier: this.user.rankTier,
+          level: this.user.level,
+          recentChampion: this.user.recentChampion
         }
       ];
 
       const localData = JSON.parse(localStorage.getItem("recentSearch"));
-      
-      if(localData) {
+
+      if (localData) {
         const localDataLength = localData.length;
-        
-        for(let i = 0; i < localDataLength; i++) {
-          if(localData[i][0] === this.user.name) {
-              localData.splice(i, 1);
-              break;
-          } 
-        
+
+        for (let i = 0; i < localDataLength; i++) {
+          if (localData[i][0] === this.user.name) {
+            localData.splice(i, 1);
+            break;
+          }
         }
-        
-        if(localData.length > 4) {localData.shift()};
-        
+
+        if (localData.length > 4) {
+          localData.shift();
+        }
+
         localData.push(item);
-        localStorage.setItem("recentSearch", JSON.stringify(localData));        
+        localStorage.setItem("recentSearch", JSON.stringify(localData));
       } else {
         const array = [];
         array.push(item);
@@ -111,26 +118,27 @@ export default {
     async isTodayFirstUser() {
       const today = new Date();
       const todayString = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-      const isTodayFirstUser = await axios.get(`${VUE_APP_LOCAL_URI}/today/${todayString}`);
+      const isTodayFirstUser = await axios.get(
+        `${VUE_APP_LOCAL_URI}/today/${todayString}`
+      );
       return isTodayFirstUser.data;
     },
     saveTodayFirstUser() {
       const today = new Date();
       const todayString = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-      
+
       const data = {
-        ogName : this.user.ogName,
-        level : this.user.level,
-        rankTier : this.user.rankTier,
-        recentChampion : this.user.recentChampion,
-        date : todayString,
+        ogName: this.user.ogName,
+        level: this.user.level,
+        rankTier: this.user.rankTier,
+        recentChampion: this.user.recentChampion,
+        date: todayString
       };
 
-      axios.post(`${VUE_APP_LOCAL_URI}/today`, data)
-        .then(({data}) => {
-          let text;
-          data ? text = "성공" : text = "실패"
-        })
+      axios.post(`${VUE_APP_LOCAL_URI}/today`, data).then(({ data }) => {
+        let text;
+        data ? (text = "성공") : (text = "실패");
+      });
     }
   }
 };
@@ -141,9 +149,24 @@ export default {
   width: 70%;
   margin: 0 auto;
 }
-@media ( max-width: 1025px ) {
-    .user {
-      width: 100%;
-    }
+
+.load {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+}
+
+.load a {
+  margin-top: 2%;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+@media (max-width: 1025px) {
+  .user {
+    width: 100%;
+  }
 }
 </style>

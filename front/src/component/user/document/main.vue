@@ -1,21 +1,23 @@
 <template>
-    <div>
-        <mainItem></mainItem>
-    </div>
+  <div>
+    <update
+      :send-date="this.sendData.modifiedDate"
+      :account="this.sendData.encryptedAccountId"
+    ></update>
+    <mainItem></mainItem>
+  </div>
 </template>
 
 <script>
-    import mainItem from './mainItem';
-    export default {
-        props: ['sendData'], 
-        components: {
-            mainItem : mainItem,
-        }
-
-        
-    }
+import mainItem from "./mainItem";
+import update from "./update";
+export default {
+  props: ["sendData"],
+  components: {
+    mainItem: mainItem,
+    update: update
+  }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -273,7 +273,7 @@ module.exports.updateUser = async (accountId) => {
 
 const updateUserDB = async (accountId) => {
   try {
-    const user = await getUserDB(accountId);
+    let user = await getUserDB(accountId);
     const userIdInfo = await getUserId(user.name);
 
     const leagueInfo = await getUserLeagueInfo(user.encryptedId);
@@ -293,7 +293,7 @@ const updateUserDB = async (accountId) => {
       user[item] = matchInfo[item];
     }
     user.modifiedDate = Date.now();
-    user.etc = await lolData.setEtc(user);
+    user = await lolData.setEtc(user);
 
     await user.save();
     return true;
