@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="updateBox">
     <div v-if="!ing" class="update">
       <div v-if="date" class="updateDate">최근 새로고침 : {{ this.date }}</div>
       <div class="button" @click="updateUser()">새로고침</div>
@@ -81,6 +81,10 @@ export default {
 </script>
 
 <style scoped>
+.updateBox {
+  width: 100%;
+  display: flex;
+}
 .update {
   width: 100%;
   display: flex;

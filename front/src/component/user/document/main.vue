@@ -1,10 +1,7 @@
 <template>
-  <div>
-    <update
-      :send-date="this.sendData.modifiedDate"
-      :account="this.sendData.encryptedAccountId"
-    ></update>
-    <mainItem></mainItem>
+  <div class="mainItem">
+    <mainItem :send-data="this.tier"></mainItem>
+    <mainItem :send-data="this.level"></mainItem>
   </div>
 </template>
 
@@ -16,8 +13,28 @@ export default {
   components: {
     mainItem: mainItem,
     update: update
+  },
+  data() {
+    return {
+      tier: {
+        title: "RANK",
+        first: this.sendData.rankTier,
+        methods: "tier"
+      },
+      level: {
+        title: "LEVEL",
+        level: this.sendData.level,
+        methods: "level"
+      }
+    };
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.mainItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

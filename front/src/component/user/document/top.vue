@@ -1,5 +1,6 @@
 <template>
   <div class="documentTop">
+    <update :send-date="this.sendData.modifiedDate" :account="this.sendData.encryptedAccountId"></update>
     <div v-if="!style" class="noImg">?</div>
     <div v-if="style" class="profile" :style="style"></div>
     <div class="userName">{{ this.sendData.ogName }}</div>
@@ -9,7 +10,11 @@
 </template>
 
 <script>
+import update from "./update";
 export default {
+  components: {
+    update: update
+  },
   props: ["sendData"],
   data: function() {
     return {
