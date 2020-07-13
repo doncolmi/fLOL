@@ -12,10 +12,7 @@
     <div v-if="user" class="user">
       <div>
         <top :send-data="user"></top>
-        <mainContent :send-data="user"></mainContent>
-        <div v-for="(item, i) in toast" v-bind:key="i">
-          <toast :class="item.class" :send-data="item" v-bind:ogName="user.ogName"></toast>
-        </div>
+        <mainContent :send-data="user" :toast="toast"></mainContent>
       </div>
     </div>
   </div>
@@ -54,8 +51,11 @@ export default {
       this.saveRecentSearch();
     }
   },
+  updated() {
+    this.saveRecentSearch();
+  },
   watch: {
-    $route: "getUserData"
+    $route: ["getUserData", "saveRecentSearch"]
   },
   methods: {
     async getUserData() {

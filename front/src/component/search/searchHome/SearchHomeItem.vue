@@ -68,7 +68,7 @@
 <style scoped>
 .wrapper {
     width: 50%;
-    height: 25em;
+    height: 22em;
     background-color: rgba(0,0,0,0.02);
 }
 .content {

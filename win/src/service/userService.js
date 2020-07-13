@@ -79,7 +79,11 @@ const getMatchObject = (matchData) => {
   for (const elem of matchData) {
     MatchObject.champions.push(elem.champion + '');
     MatchObject.queue.push(elem.queue + '');
-    MatchObject.lane.push(elem.lane);
+    if (elem.role === 'NONE' || elem.role === 'DUO' || elem.role === 'SOLO') {
+      MatchObject.lane.push(elem.lane);
+    } else {
+      MatchObject.lane.push(elem.role);
+    }
     if (MatchObject.gameIds.length < 5) MatchObject.gameIds.push(elem.gameId);
   }
   return MatchObject;

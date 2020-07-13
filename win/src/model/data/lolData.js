@@ -75,7 +75,7 @@ module.exports.setEtc = async (object) => {
   } else if (object.rankTier.includes('DIAMOND')) {
     etc.push('diamond');
   } else if (
-    object.rankTier.includes('MATSER') &&
+    object.rankTier.includes('MASTER') &&
     !object.rankTier.includes('GRANDMASTER')
   ) {
     etc.push('master');
@@ -89,9 +89,12 @@ module.exports.setEtc = async (object) => {
     etc.push('mid');
   } else if (object.recentLane === 'TOP') {
     etc.push('top');
-  } else if (object.recentLane === 'BOT') {
+  } else if (
+    object.recentLane === 'BOTTOM' ||
+    object.recentLane === 'DUO_CARRY'
+  ) {
     etc.push('ad');
-  } else if (object.recentLane === 'SUPPORT') {
+  } else if (object.recentLane === 'DUO_SUPPORT') {
     etc.push('sup');
   } else if (object.recentLane === 'JUNGLE') {
     etc.push('jungle');
@@ -130,7 +133,7 @@ module.exports.setEtc = async (object) => {
   } else if (object.recentMatch === '칼바람') {
     etc.push('swordWind');
   } else if (object.recentMatch !== 'UNRANK' && object.recentMatch) {
-    etc.push('freeRank');
+    etc.push('urf');
   }
 
   object.etc = etc;
