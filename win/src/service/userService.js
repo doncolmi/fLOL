@@ -150,7 +150,12 @@ const getUserLeagueInfo = async (encryptedId) => {
   const getUserLeagueAPI = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedId}`;
   let { data } = await axios.get(getUserLeagueAPI, Config());
   if (data[0]) {
-    data = data[0];
+    if (data[1]) {
+      if (data[0].queueType === 'RANKED_FLEX_SR') data = data[1];
+      else data = data[0];
+    } else {
+      data = data[0];
+    }
   } else {
     log('언랭으로추가');
     return {

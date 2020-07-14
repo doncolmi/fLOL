@@ -44,6 +44,7 @@ export default {
 }
 
 .documentTop .userName {
+  font-weight: bold;
   font-size: 2em;
   font-family: "Noto Sans KR", sans-serif;
 }
