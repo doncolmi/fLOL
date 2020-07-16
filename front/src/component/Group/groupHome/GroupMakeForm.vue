@@ -7,11 +7,11 @@
                 친구들의 계정이 아닌 자신이 좋아하는 게이머의 계정을 추가해도 좋습니다.
             </p>
         </div>
-        <div class="btn">
-            <span @click="searchUser()" class="addContainer addBtn">
+        <router-link to="/make" class="btn" tags="div">
+            <span class="addContainer addBtn">
                 그룹 만들기
             </span>
-        </div>
+        </router-link>
         <div class="footerContent">
             <p>
                 별도의 회원가입이 필요하지 않습니다.
@@ -76,6 +76,7 @@ div {
     justify-content: center;
     align-items: center;
     margin-bottom: 0em;
+    text-decoration: none;
 }
 @media ( min-height: 1300px ) {
 
