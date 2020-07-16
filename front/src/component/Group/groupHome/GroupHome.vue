@@ -1,22 +1,30 @@
 <template>
     <div class="wrapper">
-        
+        <GroupCodeForm></GroupCodeForm>
+        <GroupMakeForm></GroupMakeForm>
     </div>
 </template>
 
 <script>
+import GroupCodeForm from './GroupCodeForm';
+import GroupMakeForm from './GroupMakeForm';
     export default {
         components : {
+            GroupCodeForm : GroupCodeForm,
+            GroupMakeForm : GroupMakeForm
         }
     }
 </script>
 
 <style scoped>
-.bottomItem {
-    position: absolute;
+.wrapper {
     width:100%;
-    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5em 0em;
 }
+
 @media ( min-height: 1300px ) {
 
 }

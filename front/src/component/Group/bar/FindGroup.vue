@@ -1,23 +1,16 @@
 <template>
-    <div class="box">
-        <div class="text">
-            <div class="title">그룹 검색</div>
-            <div class="content">찾으시는 그룹의 이름을 검색해주세요. 검색기능은 공개된 그룹만 보여집니다.</div>
-        </div>
-        <div class="inputBox shadow">
-            <input
-            type="text"
-            id="inputForm"
-            v-on:keyup.enter="searchUser()"
-            placeholder="검색할 키워드를 입력해주세요"
-            autocomplete="off"
-            />
-            <span @click="searchUser()" class="addContainer">
-              <i class="addBtn fas fa-search" aria-hidden="true"></i>
-            </span>
-        </div>
-        
-    </div>
+  <div class="inputBox shadow">
+    <input
+      type="text"
+      id="inputForm"
+      v-on:keyup.enter="searchUser()"
+      placeholder="그룹 코드를 입력해주세요."
+      autocomplete="off"
+    />
+    <span @click="searchUser()" class="addContainer">
+      <i class="addBtn fas fa-play" aria-hidden="true"></i>
+    </span>
+  </div>
 </template>
 
 <script>
@@ -26,7 +19,7 @@ export default {
     searchUser() {
       const inputForm = document.getElementById("inputForm");
       if (inputForm.value.length < 1) {
-        alert("검색할 키워드를 입력해주세요");
+        alert("검색할 사용자 이름을 입력해주세요");
         return;
       }
       this.$router.push({ path: `/user/${inputForm.value}` });
@@ -36,30 +29,8 @@ export default {
 </script>
 
 <style scoped>
-.box {
-    height:17em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.text{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-.text div {
-    margin-bottom: 0.3em;
-}
-.title{
-    font-size: 2em;
-    font-weight: bold;
-}
-.content{
-    color:rgba(0,0,0,0.5);
-}
 .inputBox {
-  width: 30%;
+  width: 50%;
   background: white;
   height: 50px;
   line-height: 50px;
@@ -73,7 +44,7 @@ export default {
 .inputBox input {
   border-style: none;
   font-size: 1.1rem;
-  width: 80%;
+  width: 60%;
   margin-left:3%;
 }
 .inputBox input:focus {
@@ -91,12 +62,6 @@ export default {
   color: white;
   vertical-align: middle;
   font-size: 1.5em;
-}
-
-.hr {
-    margin: 0 auto;
-    width:50%;
-    border-bottom: 1px solid gray;
 }
 @media ( min-height: 1300px ) {
   .inputBox {

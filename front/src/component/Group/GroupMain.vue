@@ -25,5 +25,8 @@ import GroupHome from './groupHome/GroupHome';
     margin: 0 auto;
     width:80%;
     border-bottom: 1px solid lightgray;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
+    box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(168, 168, 168, 1);
 }
 </style>

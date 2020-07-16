@@ -2,7 +2,7 @@
     <div>
     <router-link to="/search" class="topMenu">유저 검색</router-link>
       <router-link to="/group" class="topMenu">그룹 검색</router-link>
-      <router-link to="/" class="topMenu">그룹 만들기</router-link>
+      <router-link to="/make" class="topMenu">그룹 만들기</router-link>
     </div>
 </template>
 
