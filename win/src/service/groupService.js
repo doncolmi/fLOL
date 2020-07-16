@@ -87,6 +87,7 @@ module.exports.saveGroup = async (groupData) => {
     groupData.adminPassword = adminPw;
     const group = new groupSchema(groupData);
     await group.save();
+    return groupData.code;
   } catch (e) {
     throw new Error(e);
   }

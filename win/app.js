@@ -9,6 +9,7 @@ const toast = require('./src/model/data/toastData');
 
 const indexRouter = require('./src/controller/index');
 const userRouter = require('./src/controller/user');
+const groupRouter = require('./src/controller/group');
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/g', groupRouter);
 
 module.exports = app;
