@@ -44,7 +44,6 @@ import Swal from "sweetalert2";
 import axios from "axios";
 export default {
   created() {
-    console.log(this.$parent.adminPassword);
     this.getIsOpen();
   },
   data() {
@@ -72,7 +71,7 @@ export default {
     saveGroup() {
       const parent = this.$parent;
       let password;
-      if (parent.password) password = "";
+      if (parent.open) password = "";
       else password = parent.password;
       const group = {
         name: parent.name,
@@ -81,7 +80,6 @@ export default {
         adminPassword: parent.adminPassword
       };
       axios.post(`${VUE_APP_LOCAL_URI}/g`, group).then(({ data }) => {
-        console.log(data);
         parent.code = data;
         this.back(3);
       });

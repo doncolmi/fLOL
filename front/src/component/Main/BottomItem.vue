@@ -22,6 +22,13 @@ export default {
 .bottomItem {
   width:33%;
   text-align: center;
+  transition: 1s;
+  border-radius: 1em;
+  padding: 1% 0%;
+}
+
+.bottomItem:hover {
+    box-shadow: 0px 0px 10px 0px lightgray;
 }
 
 .bottomIcon {

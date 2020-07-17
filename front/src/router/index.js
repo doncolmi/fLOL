@@ -4,8 +4,10 @@ import main from "../component/Main/Main";
 import document from "../component/user/document";
 import search from "../component/search/Search";
 import searchHome from "../component/search/searchHome/SearchHome";
-import group from "../component/Group/GroupMain";
+import group from "../component/Group/group/Main";
+import groupMain from "../component/Group/GroupMain";
 import groupMake from "../component/Group/groupMake/GroupMake";
+import groupSearch from "../component/Group/groupSearch/GroupSearch";
 
 Vue.use(VueRouter);
 
@@ -19,7 +21,9 @@ const Search = search;
 const SearchHome = searchHome;
 
 const Group = group;
+const GroupMain = groupMain;
 const GroupMake = groupMake;
+const GroupSearch = groupSearch;
 
 const router = new VueRouter({
   mode: "history",
@@ -37,10 +41,11 @@ const router = new VueRouter({
       ]
     },
     {
-      path: "/group",
-      component: Group,
-      children: []
+      path: "/g",
+      component: GroupMain
     },
+    { path: "/g/search/:keyword", component: GroupSearch },
+    { path: "/g/:code", component: Group },
     {
       path: "/make",
       component: GroupMake,

@@ -9,7 +9,7 @@ import name from "./name";
 import open from "./open";
 import adminPassword from "./adminPassword";
 import check from "./check";
-import code from "./code";
+import codes from "./code";
 export default {
   data() {
     return {
@@ -18,7 +18,7 @@ export default {
       open: null,
       password: null,
       adminPassword: null,
-      code: null
+      codes: null
     };
   },
   components: {
@@ -26,7 +26,7 @@ export default {
     open: open,
     adminPassword: adminPassword,
     check: check,
-    code: code
+    codes: codes
   },
   methods: {
     saveName() {
@@ -46,7 +46,7 @@ export default {
       } else if (page === 2) {
         this.view = adminPassword;
       } else if (page === 3) {
-        this.view = code;
+        this.view = codes;
       }
     }
   }

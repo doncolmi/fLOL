@@ -9,7 +9,7 @@
 
 <script>
 import TopBanner from '../TopBanner';
-import SearchBar from './bar/SearchBar';
+import SearchBar from './groupHome/GroupSearchForm';
 import GroupHome from './groupHome/GroupHome';
     export default {
         components : {

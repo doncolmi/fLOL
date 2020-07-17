@@ -1,4 +1,5 @@
 const axios = require('axios');
+const UserService = require('./userService');
 const groupSchema = require('../model/schema/groupSchema');
 
 const crypto = require('crypto');
@@ -118,9 +119,20 @@ module.exports.updateGroupInfo = async ({
 };
 
 module.exports.getGroup = async (code) => {
-  const group = await groupSchema.findOne({
-    code: code,
-  });
+  const group = await groupSchema.findOne(
+    {
+      code: code,
+    },
+    {
+      open: 1,
+      members: 1,
+      membersNum: 1,
+      name: 1,
+      code: 1,
+      createdDate: 1,
+      _id: 0,
+    }
+  );
 
   return group;
 };
@@ -130,11 +142,38 @@ module.exports.deleteGroup = async (code) => {
     const group = await groupSchema.deleteOne({
       code: code,
     });
-
     return true;
   } catch (e) {
-    console.log(e);
-
     return false;
+  }
+};
+
+module.exports.searchGroup = async (keyword, page) => {
+  try {
+    const searchKeyword = new RegExp(keyword);
+    const group = await groupSchema
+      .find(
+        { name: searchKeyword, open: true },
+        { membersNum: 1, name: 1, code: 1, createdDate: 1, _id: 0 }
+      )
+      .sort({ createdDate: -1 })
+      .skip((page - 1) * 10)
+      .limit(10);
+    return group;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+module.exports.countSearchGroup = async (keyword) => {
+  try {
+    const searchKeyword = new RegExp(keyword);
+    const group = await groupSchema.countDocuments({
+      name: searchKeyword,
+      open: true,
+    });
+    return group;
+  } catch (e) {
+    console.log(e);
   }
 };

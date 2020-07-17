@@ -1,63 +1,37 @@
 <template>
-    <div class="box">
-        <div class="text">
-            <div class="title">그룹 검색</div>
-            <div class="content">찾으시는 그룹의 이름을 검색해주세요. 검색기능은 공개된 그룹만 보여집니다.</div>
-        </div>
-        <div class="inputBox shadow">
-            <input
-            type="text"
-            id="inputForm"
-            v-on:keyup.enter="searchUser()"
-            placeholder="검색할 키워드를 입력해주세요"
-            autocomplete="off"
-            />
-            <span @click="searchUser()" class="addContainer">
-              <i class="addBtn fas fa-search" aria-hidden="true"></i>
-            </span>
-        </div>
-        
-    </div>
+  <div class="inputBox shadow">
+      <input
+      type="text"
+      id="inputForm"
+      v-on:keyup.enter="searchGroup()"
+      placeholder="검색할 키워드를 입력해주세요"
+      autocomplete="off"
+      :value="inputValue"
+      />
+      <span @click="searchGroup()" class="addContainer">
+        <i class="addBtn fas fa-search" aria-hidden="true"></i>
+      </span>
+  </div>
 </template>
 
 <script>
 export default {
+  props : ['inputValue'],
   methods: {
-    searchUser() {
+    searchGroup() {
       const inputForm = document.getElementById("inputForm");
       if (inputForm.value.length < 1) {
         alert("검색할 키워드를 입력해주세요");
         return;
       }
-      this.$router.push({ path: `/user/${inputForm.value}` });
+      this.$router.push({ path: `/g/search/${inputForm.value}` });
     }
   }
 };
 </script>
 
 <style scoped>
-.box {
-    height:17em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.text{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-.text div {
-    margin-bottom: 0.3em;
-}
-.title{
-    font-size: 2em;
-    font-weight: bold;
-}
-.content{
-    color:rgba(0,0,0,0.5);
-}
+
 .inputBox {
   width: 30%;
   background: white;

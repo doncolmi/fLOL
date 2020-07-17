@@ -2,12 +2,12 @@
   <div class="inputBox shadow">
     <input
       type="text"
-      id="inputForm"
-      v-on:keyup.enter="searchUser()"
+      id="inputForms"
+      v-on:keyup.enter="goGroup()"
       placeholder="그룹 코드를 입력해주세요."
       autocomplete="off"
     />
-    <span @click="searchUser()" class="addContainer">
+    <span @click="goGroup()" class="addContainer">
       <i class="addBtn fas fa-play" aria-hidden="true"></i>
     </span>
   </div>
@@ -16,13 +16,16 @@
 <script>
 export default {
   methods: {
-    searchUser() {
-      const inputForm = document.getElementById("inputForm");
-      if (inputForm.value.length < 1) {
-        alert("검색할 사용자 이름을 입력해주세요");
+    goGroup() {
+      const code = document.getElementById("inputForms").value;
+      if (code.length !== 6) {
+        alert("코드는 6자로 구성되어 있습니다.");
+        return;
+      } else if(code.length < 1) {
+        alert("코드를 입력해주세요.");
         return;
       }
-      this.$router.push({ path: `/user/${inputForm.value}` });
+      this.$router.push({ path: `/g/${code}` });
     }
   }
 };
