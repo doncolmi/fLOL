@@ -1,9 +1,20 @@
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
+
 const UserService = require('./userService');
 const groupSchema = require('../model/schema/groupSchema');
 
 const crypto = require('crypto');
+const { rejects } = require('assert');
+const { resolve } = require('path');
 const log = console.log;
+
+const enCrypted = (pw, salt) => {
+  return crypto
+    .createHash('sha512')
+    .update(pw + salt)
+    .digest('hex');
+};
 
 const useCrypto = (pw, adminPw) => {
   const salt = Math.round(new Date().valueOf() * Math.random()) + '';
@@ -12,22 +23,13 @@ const useCrypto = (pw, adminPw) => {
     encryptPw = {
       salt: salt,
       pw: '',
-      adminPw: crypto
-        .createHash('sha512')
-        .update(adminPw + salt)
-        .digest('hex'),
+      adminPw: enCrypted(adminPw, salt),
     };
   } else {
     encryptPw = {
       salt: salt,
-      pw: crypto
-        .createHash('sha512')
-        .update(pw + salt)
-        .digest('hex'),
-      adminPw: crypto
-        .createHash('sha512')
-        .update(adminPw + salt)
-        .digest('hex'),
+      pw: enCrypted(pw, salt),
+      adminPw: enCrypted(adminPw, salt),
     };
   }
   return encryptPw;
@@ -175,5 +177,35 @@ module.exports.countSearchGroup = async (keyword) => {
     return group;
   } catch (e) {
     console.log(e);
+  }
+};
+
+module.exports.authGroup = async (loginInfo) => {
+  try {
+    const group = await groupSchema.findOne({ code: loginInfo.code });
+    const password = await enCrypted(loginInfo.password, group.salt);
+    if (group.password === password) {
+      const tokenContent = {
+        admin: false,
+        code: loginInfo.code,
+      };
+      const option = {
+        expiresIn: '5h',
+        issuer: 'flol',
+        subject: 'secretGroup',
+      };
+      const token = jwt.sign(tokenContent, process.env.SECRET_KEY, option);
+      return {
+        success: true,
+        code: loginInfo.code,
+        token: token,
+      };
+    }
+  } catch (e) {
+    log(e);
+    return {
+      success: false,
+      token: null,
+    };
   }
 };

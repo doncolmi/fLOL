@@ -1,7 +1,7 @@
 <template>
     <div class="UserList">
         <div class="top">
-            그룹에 추가된 유저들
+            그룹 유저
             <a>{{this.membersNum}}명</a>
         </div>
         <div class="list">
@@ -132,6 +132,8 @@
 <style scoped>
     .UserList{
         width:100%;
+        overflow: auto;
+        height: 50em;
     }
     .top {
         font-size: 0.9em;

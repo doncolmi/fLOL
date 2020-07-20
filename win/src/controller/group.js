@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
 const groupService = require('../service/groupService');
 
 /* GET home page. */
@@ -18,6 +19,10 @@ router.get('/search/:keyword', async function (req, res, next) {
 
 router.post('/search', async function (req, res, next) {
   res.json(await groupService.searchGroup(req.body.keyword, req.body.page));
+});
+
+router.post('/auth', async function (req, res, next) {
+  res.json(await groupService.authGroup(req.body));
 });
 
 module.exports = router;
