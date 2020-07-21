@@ -7,6 +7,7 @@ const groupSchema = require('../model/schema/groupSchema');
 const crypto = require('crypto');
 const { rejects } = require('assert');
 const { resolve } = require('path');
+const { assert } = require('console');
 const log = console.log;
 
 const enCrypted = (pw, salt) => {
@@ -180,32 +181,43 @@ module.exports.countSearchGroup = async (keyword) => {
   }
 };
 
-module.exports.authGroup = async (loginInfo) => {
-  try {
-    const group = await groupSchema.findOne({ code: loginInfo.code });
-    const password = await enCrypted(loginInfo.password, group.salt);
-    if (group.password === password) {
-      const tokenContent = {
-        admin: false,
-        code: loginInfo.code,
-      };
-      const option = {
-        expiresIn: '5h',
-        issuer: 'flol',
-        subject: 'secretGroup',
-      };
-      const token = jwt.sign(tokenContent, process.env.SECRET_KEY, option);
-      return {
-        success: true,
-        code: loginInfo.code,
-        token: token,
-      };
-    }
-  } catch (e) {
-    log(e);
-    return {
-      success: false,
-      token: null,
-    };
+module.exports.authGroup = async (body) => {
+  const group = await groupSchema.findOne({ code: body.code }).catch((err) => {
+    throw new Error('login fail');
+  });
+  const password = await enCrypted(body.password, group.salt);
+  if (group.password === password) {
+    return body.code;
   }
+  throw new Error('login fail');
+};
+
+const getPayload = (code) => ({
+  admin: true,
+  code: code,
+});
+
+const setOption = (time, issuer, subject) => ({
+  expiresIn: time,
+  issuer: issuer,
+  subject: subject,
+});
+
+const getToken = (payload, option) =>
+  jwt.sign(payload, process.env.SECRET_KEY, option);
+
+module.exports.adminAuthGroup = async (adminInfo) => {
+  const group = await groupSchema
+    .findOne({ code: adminInfo.code })
+    .catch((err) => {
+      throw new Error('login fail');
+    });
+  const password = await enCrypted(adminInfo.password, group.salt);
+  if (group.adminPassword === password) {
+    const payload = getPayload(group.code);
+    const option = setOption('5h', 'flol', 'adminPassword');
+    const token = getToken(payload, option);
+    return token;
+  }
+  throw new Error('login fail');
 };

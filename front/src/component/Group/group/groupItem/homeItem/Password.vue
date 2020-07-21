@@ -8,18 +8,40 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                password : "",
-            }
-        },
-        methods : {
-            checkPassword() {
-                this.$parent.checkPassword(this.password);
-            }
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import Home from '../Home';
+
+export default {
+    data() {
+        return {
+            password : "",
         }
-    }
+    },
+    components : {
+        Home : Home,
+    },
+    methods : {
+        checkPassword() {
+            const auth = {
+                code : this.$route.params.code,
+                password : this.password
+            };
+            axios.post(`${VUE_APP_LOCAL_URI}/g/auth`, auth)
+            .then(({data}) => {
+                    this.$parent.view = Home;
+                    this.$store.state.authGroupCode = data.code;
+            })
+            .catch((err) => {
+                console.log(err);
+                Swal.fire({
+                    icon: "error",
+                    text: "비밀번호가 일치 하지 않습니다."
+                });
+            });
+        },
+    },
+}
 </script>
 
 <style scoped>

@@ -25,4 +25,8 @@ router.post('/auth', async function (req, res, next) {
   res.json(await groupService.authGroup(req.body));
 });
 
+router.post('/admin', async function (req, res, next) {
+  res.json(await groupService.adminAuthGroup(req.body));
+});
+
 module.exports = router;

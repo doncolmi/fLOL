@@ -1,8 +1,8 @@
 <template>
     <div class="HomeMain">
-        <div class="title">팡주불주댁</div>
+        <div class="title">{{ this.$parent.group.name }}</div>
         <div class="setting">
-            <span @click="goSetting" style="cursor:pointer"><i class="fas fa-wrench" style="margin-right:0.2em;"></i>관리 메뉴</span>
+            <span @click="go(1)" style="cursor:pointer"><i class="fas fa-wrench" style="margin-right:0.2em;"></i>관리 메뉴</span>
         </div>
         <div class="info">
             <Home-Main-Menu v-for="item in menu" v-bind:key="item.name" :content="item"></Home-Main-Menu>
@@ -23,18 +23,18 @@
                 {
                     title : "내전 팀 구성",
                     exp : "친구들과 5vs5 팀짜기",
-                    go : 1,
+                    go : 2,
                 },
                 {
                     title : "아직 준비 중 입니다.",
                     exp : "추후 개발 예정입니다.",
-                    go : 2,
+                    go : 3,
                 }],
             }
         },
         methods: {
-            goSetting() {
-                this.$router.push({ path: `/g/${this.$route.params.code}/setting` });
+            go(num) {
+                this.$parent.$parent.go(1);
             },
         },
         components : {
