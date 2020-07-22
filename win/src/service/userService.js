@@ -157,7 +157,6 @@ const getUserLeagueInfo = async (encryptedId) => {
       data = data[0];
     }
   } else {
-    log('언랭으로추가');
     return {
       rankTier: `UNRANK`,
       rankScore: 0,

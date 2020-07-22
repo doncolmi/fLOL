@@ -183,7 +183,7 @@ module.exports.countSearchGroup = async (keyword) => {
 
 module.exports.authGroup = async (body) => {
   const group = await groupSchema.findOne({ code: body.code }).catch((err) => {
-    throw new Error('login fail');
+    throw new Error('group found fail');
   });
   const password = await enCrypted(body.password, group.salt);
   if (group.password === password) {

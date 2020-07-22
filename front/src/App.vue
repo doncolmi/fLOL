@@ -26,4 +26,10 @@ top {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+button:focus {
+  outline: none;
+}
+input:foucs {
+  outline: none;
+}
 </style>

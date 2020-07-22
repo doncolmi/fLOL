@@ -22,11 +22,19 @@ router.post('/search', async function (req, res, next) {
 });
 
 router.post('/auth', async function (req, res, next) {
-  res.json(await groupService.authGroup(req.body));
+  try {
+    res.json(await groupService.authGroup(req.body));
+  } catch (err) {
+    res.status(403).json({ error: err.toString() });
+  }
 });
 
 router.post('/admin', async function (req, res, next) {
-  res.json(await groupService.adminAuthGroup(req.body));
+  try {
+    res.json(await groupService.adminAuthGroup(req.body));
+  } catch (err) {
+    res.status(403).json({ error: err.toString() });
+  }
 });
 
 module.exports = router;
