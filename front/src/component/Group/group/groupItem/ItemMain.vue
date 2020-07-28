@@ -14,6 +14,7 @@
 
     import AdminPassword from './adminItem/adminPassword';
     import AdminHome from './adminItem/adminHome/adminHome';
+    import AdminNotice from './adminItem/adminNotice/adminNotice';
     import Home from './Home';
     export default {
         data() {
@@ -31,6 +32,7 @@
             AdminPassword : AdminPassword,
             Home: Home,
             AdminHome : AdminHome,
+            AdminNotice : AdminNotice,
         },
         async created() {
             this.getGroupInfo();
@@ -61,6 +63,7 @@
                     case 0: this.view = Notice; return;
                     case 1: this.view = AdminPassword; return;
                     case 11: this.view = AdminHome; return;
+                    case 12: this.view = AdminNotice; return;
                     default: return;
                 }
             }

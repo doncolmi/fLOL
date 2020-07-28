@@ -1,5 +1,5 @@
 <template>
-    <div class="elem elemSize elemFlex">
+    <div class="elem elemSize elemFlex" @click="go(12)">
         <div class="top">
             <div class="title">공지사항 관리</div>
             <div class="exp">exp</div>
@@ -13,7 +13,20 @@
 
 <script>
     export default {
-        // todo : 여기서부터 만들면됩니다.
+        data() {
+            return{ 
+                parent : this.$parent.$parent,
+            }
+        },
+        created() {
+            console.log("부모값");
+            console.log(this.$parent.$parent);
+        },
+        methods : {
+            go(num) {
+                this.parent.go(num);
+            }
+        }
     }
 </script>
 
