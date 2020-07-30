@@ -1,18 +1,20 @@
 <template>
-    <div class="elem elemSize elemFlex" @click="go(12)">
+    <div class="elem elemSize elemFlex" @click="go(menu.go)">
         <div class="top">
-            <div class="title">공지사항 관리</div>
-            <div class="exp">exp</div>
+            <div class="title">{{ this.menu.title }}</div>
+            <div class="exp">{{ this.menu.exp }}</div>
         </div>
         
         <div class="icon">
-            <span><i class="fas fa-bullhorn"></i></span>
+            <span><i :class="menu.class"></i></span>
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        props: ["menu"]
+        ,
         data() {
             return{ 
                 parent : this.$parent.$parent,
