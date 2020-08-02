@@ -6,6 +6,10 @@ const noticeService = require('../service/noticeService');
 
 /* GET home page. */
 
+const saveGroup = async (req, res) => {
+  res.json(await groupService.saveGroup(req.body));
+};
+
 const authFunction = (req, res, next) => {
   noticeService
     .auth(req.headers.authorization, req.params.code)
@@ -15,69 +19,78 @@ const authFunction = (req, res, next) => {
     .catch((err) => res.status(403).json('권한이 없습니다.'));
 };
 
-router.post('/notice', function (req, res, next) {
+const saveNotice = (req, res, next) => {
   noticeService
-    .auth(req.headers.authorization, req.body.code)
-    .then((r) => {
-      noticeService
-        .save(req.body)
-        .then((suc) => res.status(200).json(true))
-        .catch((err) => res.status(404).json(false));
-    })
-    .catch((err) => res.status(403).json('권한이 없습니다.'));
-});
+    .save(req.body)
+    .then((save) => res.status(200).json(save))
+    .catch((err) => res.status(404).json(err));
+};
 
-router.get('/:code', async function (req, res, next) {
-  res.json(await groupService.getGroup(req.params.code));
-});
-
-router.get('/:code/notice', async function (req, res, next) {
+const getNotice = (req, res) => {
   noticeService
     .get(req.params.code, req.query.page)
     .then((notice) => res.json(notice))
     .catch((err) => res.status(500).json(err));
-});
+};
 
-router.get('/:code/notice/max', authFunction, function (req, res) {
+const getGroup = (req, res) => {
+  groupService
+    .getGroup(req.params.code)
+    .then((group) => res.json(group))
+    .catch((err) => res.status(404).json(err));
+};
+
+const getNoticeMax = (req, res) => {
   noticeService
     .max(req.params.code)
-    .then((notice) => res.json(notice))
+    .then((notice) => res.status(200).json(notice))
     .catch((err) => res.status(500).json(err));
-});
+};
 
-router.delete('/:code/notice', authFunction, function (req, res) {
+const deleteNotice = (req, res) => {
   noticeService
     .delete(req.params.id)
     .then((notice) => res.json(notice))
     .catch((err) => res.status(500).json(err));
-});
+};
 
-router.post('/', async function (req, res, next) {
-  res.json(await groupService.saveGroup(req.body));
-});
+const searchGroup = (req, res) => {
+  groupService
+    .searchGroup(req.body.keyword, req.body.page)
+    .then((groups) => res.json(groups))
+    .catch((err) => res.status(500).json(err));
+};
 
-router.get('/search/:keyword', async function (req, res, next) {
-  res.json(await groupService.countSearchGroup(req.params.keyword));
-});
+const countSearchGroup = (req, res) => {
+  groupService
+    .countSearchGroup(req.params.keyword)
+    .then((cnt) => res.json(cnt))
+    .catch((err) => res.status(500).json(err));
+};
 
-router.post('/search', async function (req, res, next) {
-  res.json(await groupService.searchGroup(req.body.keyword, req.body.page));
-});
+const authCloseGroup = (req, res) => {
+  groupService
+    .authGroup(req.body)
+    .then((code) => res.json(code))
+    .catch((err) => res.status(500).json(err));
+};
 
-router.post('/auth', async function (req, res, next) {
-  try {
-    res.json(await groupService.authGroup(req.body));
-  } catch (err) {
-    res.status(403).json({ error: err.toString() });
-  }
-});
+const adminAuthGroup = (req, res) => {
+  groupService
+    .adminAuthGroup(req.body)
+    .then((token) => res.json(token))
+    .catch((err) => res.status(500).json(err));
+};
 
-router.post('/admin', async function (req, res, next) {
-  try {
-    res.json(await groupService.adminAuthGroup(req.body));
-  } catch (err) {
-    res.status(403).json({ error: err.toString() });
-  }
-});
+router.post('/', saveGroup);
+router.get('/:code', getGroup);
+router.get('/:code/notice', getNotice);
+router.post('/:code/notice', authFunction, saveNotice);
+router.delete('/:code/notice', authFunction, deleteNotice);
+router.get('/:code/notice/max', authFunction, getNoticeMax);
+router.post('/search', searchGroup);
+router.get('/search/:keyword', countSearchGroup);
+router.post('/auth', authCloseGroup);
+router.post('/admin', adminAuthGroup);
 
 module.exports = router;

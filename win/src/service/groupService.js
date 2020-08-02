@@ -1,14 +1,8 @@
-const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
-const UserService = require('./userService');
 const groupSchema = require('../model/schema/groupSchema');
 
 const crypto = require('crypto');
-const { rejects } = require('assert');
-const { resolve } = require('path');
-const { assert } = require('console');
-const log = console.log;
 
 const enCrypted = (pw, salt) => {
   return crypto
@@ -121,23 +115,30 @@ module.exports.updateGroupInfo = async ({
   });
 };
 
-module.exports.getGroup = async (code) => {
-  const group = await groupSchema.findOne(
-    {
-      code: code,
-    },
-    {
-      open: 1,
-      members: 1,
-      membersNum: 1,
-      name: 1,
-      code: 1,
-      createdDate: 1,
-      _id: 0,
-    }
-  );
-
-  return group;
+module.exports.getGroup = (code) => {
+  return new Promise((resolve, reject) => {
+    groupSchema
+      .findOne(
+        { code: code },
+        {
+          open: 1,
+          members: 1,
+          membersNum: 1,
+          name: 1,
+          code: 1,
+          createdDate: 1,
+          _id: 0,
+        }
+      )
+      .then((res) => {
+        if (res) {
+          resolve(res);
+        } else {
+          reject(Error('Not Found'));
+        }
+      })
+      .catch((err) => reject(Error(err)));
+  });
 };
 
 module.exports.deleteGroup = async (code) => {
@@ -151,45 +152,43 @@ module.exports.deleteGroup = async (code) => {
   }
 };
 
-module.exports.searchGroup = async (keyword, page) => {
-  try {
-    const searchKeyword = new RegExp(keyword);
-    const group = await groupSchema
+module.exports.searchGroup = (keyword, page) => {
+  return new Promise((resolve, reject) => {
+    groupSchema
       .find(
-        { name: searchKeyword, open: true },
+        { name: new RegExp(keyword), open: true },
         { membersNum: 1, name: 1, code: 1, createdDate: 1, _id: 0 }
       )
       .sort({ createdDate: -1 })
       .skip((page - 1) * 10)
-      .limit(10);
-    return group;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-module.exports.countSearchGroup = async (keyword) => {
-  try {
-    const searchKeyword = new RegExp(keyword);
-    const group = await groupSchema.countDocuments({
-      name: searchKeyword,
-      open: true,
-    });
-    return group;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-module.exports.authGroup = async (body) => {
-  const group = await groupSchema.findOne({ code: body.code }).catch((err) => {
-    throw new Error('group found fail');
+      .limit(10)
+      .then((res) => resolve(res))
+      .catch((err) => reject(new Error(err)));
   });
-  const password = await enCrypted(body.password, group.salt);
-  if (group.password === password) {
-    return body.code;
-  }
-  throw new Error('login fail');
+};
+
+module.exports.countSearchGroup = (keyword) => {
+  return new Promise((resolve, reject) => {
+    groupSchema
+      .countDocuments({
+        name: new RegExp(keyword),
+        open: true,
+      })
+      .then((res) => resolve(res))
+      .catch((err) => reject(new Error(err)));
+  });
+};
+
+module.exports.authGroup = (body) => {
+  return new Promise((resolve, reject) => {
+    groupSchema
+      .findOne({ code: body.code })
+      .then((res) => {
+        const password = enCrypted(body.password, res.salt);
+        if (res.password === password) resolve(body.code);
+      })
+      .catch((err) => reject(new Error(err)));
+  });
 };
 
 const getPayload = (code) => ({
@@ -206,18 +205,20 @@ const setOption = (time, issuer, subject) => ({
 const getToken = (payload, option) =>
   jwt.sign(payload, process.env.SECRET_KEY, option);
 
-module.exports.adminAuthGroup = async (adminInfo) => {
-  const group = await groupSchema
-    .findOne({ code: adminInfo.code })
-    .catch((err) => {
-      throw new Error('login fail');
-    });
-  const password = await enCrypted(adminInfo.password, group.salt);
-  if (group.adminPassword === password) {
-    const payload = getPayload(group.code);
-    const option = setOption('5h', 'flol', 'adminPassword');
-    const token = getToken(payload, option);
-    return token;
-  }
-  throw new Error('login fail');
+module.exports.adminAuthGroup = async (body) => {
+  return new Promise((resolve, reject) => {
+    groupSchema
+      .findOne({ code: adminInfo.code })
+      .then((res) => {
+        const password = enCrypted(body.password, res.salt);
+        if (res.adminPassword === password) {
+          const token = getToken(
+            getPayload(res.code),
+            setOption('5h', 'flol', 'adminPassword')
+          );
+          resolve(token);
+        }
+      })
+      .catch((err) => reject(new Error(err)));
+  });
 };
